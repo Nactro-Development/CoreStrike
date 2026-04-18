@@ -1,3 +1,7 @@
+using LibreHardwareMonitor.Hardware;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,9 +12,6 @@ using System.Management;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using LibreHardwareMonitor.Hardware;
-using LiveChartsCore.Defaults;
-using Microsoft.UI.Xaml.Controls;
 
 namespace CoreStrike.DashBord
 {
@@ -24,8 +25,26 @@ namespace CoreStrike.DashBord
         private string _cpuDisplayText = string.Empty;
         private string _cpuCoresAvg = "N/A";
         private ObservableCollection<ObservablePoint> _cpuUsageData = new();
+        private Axis? _xAxis;
+        private float _maxCpuTemperature = 0;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public float MaxCpuTemperature
+        {
+            get => _maxCpuTemperature;
+            private set { if (_maxCpuTemperature != value) { _maxCpuTemperature = value; OnPropertyChanged(); } }
+        }
+
+        public void ResetMaxTemperature()
+        {
+            MaxCpuTemperature = 0;
+        }
+
+        public void SetXAxis(Axis xAxis)
+        {
+            _xAxis = xAxis;
+        }
 
         public string CpuName
         {
@@ -292,6 +311,12 @@ namespace CoreStrike.DashBord
                             ? $"{temperature:F0}°C"
                             : "N/A";
 
+                        // Track maximum temperature
+                        if (temperature > MaxCpuTemperature)
+                        {
+                            MaxCpuTemperature = temperature;
+                        }
+
                         CpuDisplayText = $"CPU Usage: {cpuUsage:F0}%";
 
                         // Update chart data (keep last 50 points)
@@ -299,7 +324,23 @@ namespace CoreStrike.DashBord
                         if (_cpuUsageData.Count > 50)
                             _cpuUsageData.RemoveAt(0);
 
+                        // Sliding window X axis update
+                        if (_xAxis != null)
+                        {
+                            if (dataPointCount < 50)
+                            {
+                                _xAxis.MinLimit = 0;
+                                _xAxis.MaxLimit = 49;
+                            }
+                            else
+                            {
+                                _xAxis.MinLimit = dataPointCount - 49;
+                                _xAxis.MaxLimit = dataPointCount;
+                            }
+                        }
+
                         dataPointCount++;
+
                     }
 
                     await Task.Delay(500, cancellationToken);

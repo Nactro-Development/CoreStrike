@@ -37,21 +37,40 @@
 
                     <TextBlock Text="{x:Bind CpuName, Mode=OneWay}" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap"/>
 
-                    <Border Height="80" 
-                CornerRadius="4" 
-                Background="#1A000000" 
-                Margin="0,12,0,12">
-                        
-                        
-                        <lvc:CartesianChart Background="Transparent" x:Name="CpuChart"
-                                Series="{x:Bind CpuSeries}"
-                                XAxes="{x:Bind XAxes}"
-                                YAxes="{x:Bind YAxes}"/>
+   
+                        <Border Height="80" 
+                                
+          
+CornerRadius="4" 
+Background="#1A000000" 
+Margin="0,12,0,12">
+
+
+                        <lvc:CartesianChart 
+    Background="Transparent" 
+                            HorizontalAlignment="Stretch"
+    x:Name="CpuChart"
+
+    Series="{x:Bind CpuSeries}"
+    XAxes="{x:Bind XAxes}"
+    YAxes="{x:Bind YAxes}"/>
                     </Border>
-                    
-                    <TextBlock Text="{x:Bind CpuSpeed, Mode=OneWay}" FontSize="28" FontWeight="Bold" Foreground="White"/>
-                    <TextBlock Text="{x:Bind CpuTemperature, Mode=OneWay}" FontSize="18" Foreground="#FF6B5B"/>
+
+                   
+                   
+                    <TextBlock Text="{x:Bind CpuSpeed, Mode=OneWay}" FontSize="28" FontWeight="Bold" />
+                    <TextBlock Text="{x:Bind CpuTemperature, Mode=OneWay}" FontSize="18" Foreground="{ThemeResource SystemAccentColor}"/>
                     <TextBlock Text="{x:Bind CpuDisplayText, Mode=OneWay}" Foreground="#94A3B8"/>
+
+                <!-- Converter නැතිව — style දෙකක් -->
+<Button x:Name="StressTestButton"
+        Content="{x:Bind StressButtonText, Mode=OneWay}"
+        Click="StressTestButton_Click"
+        Margin="0,8,0,0"
+     
+        HorizontalAlignment="Stretch"/>
+                    
+                    
                 </StackPanel>
             </Border>
 
