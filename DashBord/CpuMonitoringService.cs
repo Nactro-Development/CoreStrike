@@ -28,23 +28,23 @@ namespace CoreStrike.DashBord
         private Axis? _xAxis;
         private float _maxCpuTemperature = 0;
 
+        // ── New Power & Voltage fields ─────────────────────────────────────
+        private string _cpuPackagePower = "N/A";
+        private string _cpuCoreSvi2Voltage = "N/A";
+        private string _cpuSocSvi2Voltage = "N/A";
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        // ── Existing Properties ───────────────────────────────────────────
         public float MaxCpuTemperature
         {
             get => _maxCpuTemperature;
             private set { if (_maxCpuTemperature != value) { _maxCpuTemperature = value; OnPropertyChanged(); } }
         }
 
-        public void ResetMaxTemperature()
-        {
-            MaxCpuTemperature = 0;
-        }
+        public void ResetMaxTemperature() => MaxCpuTemperature = 0;
 
-        public void SetXAxis(Axis xAxis)
-        {
-            _xAxis = xAxis;
-        }
+        public void SetXAxis(Axis xAxis) => _xAxis = xAxis;
 
         public string CpuName
         {
@@ -76,11 +76,32 @@ namespace CoreStrike.DashBord
             set { if (_cpuCoresAvg != value) { _cpuCoresAvg = value; OnPropertyChanged(); } }
         }
 
-        public ObservableCollection<ObservablePoint> CpuUsageData
+        public ObservableCollection<ObservablePoint> CpuUsageData => _cpuUsageData;
+
+        // ── New Properties ────────────────────────────────────────────────
+
+        /// <summary>CPU Package Power — e.g. "38.8 W"</summary>
+        public string CpuPackagePower
         {
-            get => _cpuUsageData;
+            get => _cpuPackagePower;
+            private set { if (_cpuPackagePower != value) { _cpuPackagePower = value; OnPropertyChanged(); } }
         }
 
+        /// <summary>Core SVI2 TFN Voltage — e.g. "1.350 V"</summary>
+        public string CpuCoreSvi2Voltage
+        {
+            get => _cpuCoreSvi2Voltage;
+            private set { if (_cpuCoreSvi2Voltage != value) { _cpuCoreSvi2Voltage = value; OnPropertyChanged(); } }
+        }
+
+        /// <summary>SoC SVI2 TFN Voltage — e.g. "1.550 V"</summary>
+        public string CpuSocSvi2Voltage
+        {
+            get => _cpuSocSvi2Voltage;
+            private set { if (_cpuSocSvi2Voltage != value) { _cpuSocSvi2Voltage = value; OnPropertyChanged(); } }
+        }
+
+        // ── Constructor ───────────────────────────────────────────────────
         public CpuMonitoringService()
         {
             InitializeHardwareMonitoring();
@@ -95,10 +116,7 @@ namespace CoreStrike.DashBord
             }
         }
 
-        public void StopMonitoring()
-        {
-            _cancellationTokenSource?.Cancel();
-        }
+        public void StopMonitoring() => _cancellationTokenSource?.Cancel();
 
         public void Cleanup()
         {
@@ -115,13 +133,11 @@ namespace CoreStrike.DashBord
                     IsCpuEnabled = true,
                     IsMotherboardEnabled = true,
                 };
-
                 _computer.Open();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error initializing hardware monitoring: {ex.Message}");
-                Debug.WriteLine($"Stack trace: {ex.StackTrace}");
                 CpuDisplayText = $"Error: {ex.Message}";
             }
         }
@@ -148,16 +164,13 @@ namespace CoreStrike.DashBord
             {
                 try
                 {
-                    // Update all hardware and subhardware
                     if (_computer != null)
                     {
                         foreach (var hardware in _computer.Hardware)
                         {
                             hardware.Update();
                             foreach (var subHardware in hardware.SubHardware)
-                            {
                                 subHardware.Update();
-                            }
                         }
                     }
 
@@ -169,44 +182,35 @@ namespace CoreStrike.DashBord
                         CpuName = cpuHardware.Name;
 
                         float cpuUsage = 0;
-                        float cpuClock = 0;
-                        float cpuClockPackage = 0;
                         float temperature = 0;
                         bool hasPackageTemp = false;
                         var coreClocks = new List<float>();
 
-                        // Debug on first run - check Output window in Visual Studio
                         if (firstRun)
                         {
                             Debug.WriteLine($"=== CPU Hardware: {cpuHardware.Name} ===");
                             Debug.WriteLine($"Total Sensors: {cpuHardware.Sensors.Length}");
                             foreach (var s in cpuHardware.Sensors)
-                            {
                                 Debug.WriteLine($"  [{s.SensorType}] {s.Name} = {s.Value}");
-                            }
 
-                            // Also check motherboard subhardware for temps
-                            var mbHardware = _computer?.Hardware
+                            var mbHw = _computer?.Hardware
                                 .FirstOrDefault(h => h.HardwareType == HardwareType.Motherboard);
-                            if (mbHardware != null)
+                            if (mbHw != null)
                             {
-                                Debug.WriteLine($"=== Motherboard SubHardware ===");
-                                foreach (var sub in mbHardware.SubHardware)
+                                Debug.WriteLine("=== Motherboard SubHardware ===");
+                                foreach (var sub in mbHw.SubHardware)
                                 {
                                     Debug.WriteLine($"  SubHW: {sub.Name}");
                                     foreach (var s in sub.Sensors)
-                                    {
                                         Debug.WriteLine($"    [{s.SensorType}] {s.Name} = {s.Value}");
-                                    }
                                 }
                             }
-
                             firstRun = false;
                         }
 
                         foreach (var sensor in cpuHardware.Sensors)
                         {
-                            // ── CPU Usage ──────────────────────────────────────
+                            // ── CPU Load ───────────────────────────────────────
                             if (sensor.SensorType == SensorType.Load)
                             {
                                 if (sensor.Name.Contains("Total") ||
@@ -217,25 +221,23 @@ namespace CoreStrike.DashBord
                                 }
                             }
 
+                            // ── CPU Clock ──────────────────────────────────────
                             if (sensor.SensorType == SensorType.Clock && sensor.Value.HasValue)
                             {
                                 string name = sensor.Name.ToLower();
-
-                                // 🔴 PRIORITY 1: Best source
-                                if (name.Contains("cores (average)"))
-                                {
-                                    cpuClock = sensor.Value.Value;
-                                    break;
-                                }
+                                if (name.Contains("bus")) continue;
+                                if (name.Contains("core"))
+                                    coreClocks.Add(sensor.Value.Value);
                             }
 
                             // ── CPU Temperature ────────────────────────────────
                             if (sensor.SensorType == SensorType.Temperature)
                             {
-                                bool isPackage = sensor.Name.Contains("Package", StringComparison.OrdinalIgnoreCase)
-                                             || sensor.Name.Contains("Tdie", StringComparison.OrdinalIgnoreCase)
-                                             || sensor.Name.Contains("Tccd", StringComparison.OrdinalIgnoreCase)
-                                             || sensor.Name.Contains("CCD", StringComparison.OrdinalIgnoreCase);
+                                bool isPackage =
+                                    sensor.Name.Contains("Package", StringComparison.OrdinalIgnoreCase) ||
+                                    sensor.Name.Contains("Tdie", StringComparison.OrdinalIgnoreCase) ||
+                                    sensor.Name.Contains("Tccd", StringComparison.OrdinalIgnoreCase) ||
+                                    sensor.Name.Contains("CCD", StringComparison.OrdinalIgnoreCase);
 
                                 if (isPackage)
                                 {
@@ -244,13 +246,43 @@ namespace CoreStrike.DashBord
                                 }
                                 else if (!hasPackageTemp)
                                 {
-                                    // Fallback: take highest core temp
                                     temperature = Math.Max(temperature, sensor.Value ?? 0);
                                 }
                             }
+
+                            // ── Package Power ──────────────────────────────────
+                            if (sensor.SensorType == SensorType.Power &&
+                                sensor.Name.Equals("Package", StringComparison.OrdinalIgnoreCase) &&
+                                sensor.Value.HasValue)
+                            {
+                                CpuPackagePower = $"{sensor.Value.Value:F1} W";
+                            }
+
+
+                            // ── Core SVI2 TFN Voltage ──────────────────────────
+                            if (sensor.SensorType == SensorType.Voltage &&
+                                sensor.Name.Contains("Core", StringComparison.OrdinalIgnoreCase) &&
+                                sensor.Name.Contains("SVI2", StringComparison.OrdinalIgnoreCase) &&
+                                sensor.Value.HasValue)
+                            {
+                                CpuCoreSvi2Voltage = $"{sensor.Value.Value:F3} V";
+                            }
+
+
+
+                            // ── SoC SVI2 TFN Voltage ───────────────────────────
+                            if (sensor.SensorType == SensorType.Voltage &&
+                                sensor.Name.Contains("SoC", StringComparison.OrdinalIgnoreCase) &&
+                                sensor.Name.Contains("SVI2", StringComparison.OrdinalIgnoreCase) &&
+                                sensor.Value.HasValue)
+                            {
+                                CpuSocSvi2Voltage = $"{sensor.Value.Value:F3} V";
+                            }
+
+
                         }
 
-                        // If no temperature found in CPU sensors, check motherboard subhardware
+                        // Fallback temperature from motherboard
                         if (temperature == 0 && !hasPackageTemp)
                         {
                             var mbHardware = _computer?.Hardware
@@ -263,11 +295,11 @@ namespace CoreStrike.DashBord
                                     {
                                         if (sensor.SensorType == SensorType.Temperature && sensor.Value.HasValue)
                                         {
-                                            // Look for CPU-related temps
-                                            bool isCpuTemp = sensor.Name.Contains("CPU", StringComparison.OrdinalIgnoreCase)
-                                                          || sensor.Name.Contains("Package", StringComparison.OrdinalIgnoreCase)
-                                                          || sensor.Name.Contains("Tdie", StringComparison.OrdinalIgnoreCase)
-                                                          || sensor.Name.Contains("Tccd", StringComparison.OrdinalIgnoreCase);
+                                            bool isCpuTemp =
+                                                sensor.Name.Contains("CPU", StringComparison.OrdinalIgnoreCase) ||
+                                                sensor.Name.Contains("Package", StringComparison.OrdinalIgnoreCase) ||
+                                                sensor.Name.Contains("Tdie", StringComparison.OrdinalIgnoreCase) ||
+                                                sensor.Name.Contains("Tccd", StringComparison.OrdinalIgnoreCase);
 
                                             if (isCpuTemp)
                                             {
@@ -280,51 +312,28 @@ namespace CoreStrike.DashBord
                             }
                         }
 
-                        // Prefer package clock if available, otherwise use highest core clock
-                        float finalCpuClock = cpuClockPackage > 0 ? cpuClockPackage : cpuClock;
+                        // Clock
+                        float finalCpuClock = coreClocks.Count > 0 ? coreClocks.Average() : 0;
+                        CpuSpeed = finalCpuClock > 0 ? $"{finalCpuClock / 1000:F2} GHz" : "N/A";
+                        CpuCoresAvg = CpuSpeed;
 
-                        // Fallback for CPU usage via PerformanceCounter
-                        if (cpuUsage == 0 && cpuCounter != null)
-                        {
-                            try { cpuUsage = cpuCounter.NextValue(); }
-                            catch { /* ignore */ }
-                        }
+                        Debug.WriteLine($"CpuSpeed: {finalCpuClock} MHz | Power: {CpuPackagePower} | CoreV: {CpuCoreSvi2Voltage} | SoCv: {CpuSocSvi2Voltage}");
 
-                        CpuSpeed = finalCpuClock > 0
-                            ? $"{finalCpuClock / 1000:F2} GHz"
-                            : "N/A";
-
-                        // Calculate and display average core clock
-                        if (coreClocks.Count > 0)
-                        {
-                            float avgCoreClock = coreClocks.Average();
-                            CpuCoresAvg = $"{avgCoreClock / 1000:F2} GHz";
-                        }
-                        else
-                        {
-                            CpuCoresAvg = "N/A";
-                        }
-
-                        Debug.WriteLine($"CpuSpeed: {finalCpuClock} MHz");
-
+                        // Temperature
                         CpuTemperature = hasPackageTemp && temperature >= 0
                             ? $"{temperature:F0}°C"
                             : "N/A";
 
-                        // Track maximum temperature
                         if (temperature > MaxCpuTemperature)
-                        {
                             MaxCpuTemperature = temperature;
-                        }
 
                         CpuDisplayText = $"CPU Usage: {cpuUsage:F0}%";
 
-                        // Update chart data (keep last 50 points)
+                        // Chart data
                         _cpuUsageData.Add(new ObservablePoint(dataPointCount, cpuUsage));
                         if (_cpuUsageData.Count > 50)
                             _cpuUsageData.RemoveAt(0);
 
-                        // Sliding window X axis update
                         if (_xAxis != null)
                         {
                             if (dataPointCount < 50)
@@ -340,7 +349,6 @@ namespace CoreStrike.DashBord
                         }
 
                         dataPointCount++;
-
                     }
 
                     await Task.Delay(500, cancellationToken);

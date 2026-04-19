@@ -38,7 +38,7 @@
                     <TextBlock Text="{x:Bind CpuName, Mode=OneWay}" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap"/>
 
    
-                        <Border Height="80" 
+                        <Border Height="150" 
                                 
           
 CornerRadius="4" 
@@ -56,13 +56,68 @@ Margin="0,12,0,12">
     YAxes="{x:Bind YAxes}"/>
                     </Border>
 
-                   
-                   
-                    <TextBlock Text="{x:Bind CpuSpeed, Mode=OneWay}" FontSize="28" FontWeight="Bold" />
-                    <TextBlock Text="{x:Bind CpuTemperature, Mode=OneWay}" FontSize="18" Foreground="{ThemeResource SystemAccentColor}"/>
-                    <TextBlock Text="{x:Bind CpuDisplayText, Mode=OneWay}" Foreground="#94A3B8"/>
 
-                <!-- Converter නැතිව — style දෙකක් -->
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+                        
+                        
+                        
+            
+
+
+
+
+                    <Border Grid.Column="0" BorderBrush="{ThemeResource SystemAccentColor}" BorderThickness="1.5" HorizontalAlignment="Left" Width="100" CornerRadius="5" Background="{ThemeResource LayerFillColorDefaultBrush}">
+
+                        <StackPanel Margin="10" Spacing="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                            <Viewbox Margin="5" Width="40" Height="40">
+                                <Path x:Name="FanIcon"
+Data="M243.78,318.4c-16.78,20.61-41.43,32.81-68.09,32.93l-.17-168.23c-2.31,21.98-12.28,42.1-28.63,57.13-32.04,29.45-79.93,31.12-113.8,3.68C12.62,227.34.06,202.58,0,175.68l168.22-.17c-21.43-2.25-41.12-11.82-56.01-27.44-32.18-33.75-32.52-85.78-.6-119.86C128.06,10.67,150.96.05,175.65,0l.17,167.5c2.56-21.57,12.3-41.22,28.21-56.03,33.97-31.6,85.75-31.48,119.46.49,17.33,16.43,27.8,39.16,27.84,63.68l-167.51.17c22.13,2.65,42.2,12.75,57.14,29.43,28.7,32.03,30.25,79.46,2.82,113.16Z"
+Fill="{ThemeResource SystemAccentColor}"
+RenderTransformOrigin="0.5,0.5">
+                                    <Path.RenderTransform>
+                                        <RotateTransform x:Name="FanRotate"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Viewbox>
+
+
+                            <TextBlock Text="{x:Bind CpufanText, Mode=OneWay}" FontSize="15" Foreground="#94A3B8"/>
+                            <TextBlock Text="{x:Bind CpuTemperature, Mode=OneWay}" FontWeight="Bold" FontSize="15" Foreground="{ThemeResource SystemAccentColor}"/>
+                        </StackPanel>
+                           
+                    
+
+                      
+                        
+                    </Border>
+
+
+                    <StackPanel VerticalAlignment="Center" Grid.Column="2" >
+                        <TextBlock Text="{x:Bind CpuSpeed, Mode=OneWay}" FontSize="28" FontWeight="Bold" />
+
+                        <TextBlock Text="{x:Bind CpuDisplayText, Mode=OneWay}" Foreground="#94A3B8"/>
+                            <StackPanel  Spacing="20" Orientation="Horizontal" >
+                                <TextBlock Foreground="#94A3B8" Text="{x:Bind CpuCoreSvi2Voltage, Mode=OneWay}" />
+                                <TextBlock Foreground="#94A3B8" Text="{x:Bind CpuSocSvi2Voltage,  Mode=OneWay}" />
+                            </StackPanel>
+                            <TextBlock Foreground="{ThemeResource SystemAccentColor}" FontWeight="Bold" Text="{x:Bind CpuPackagePower,    Mode=OneWay}" />
+                          
+
+                        </StackPanel>
+
+
+
+                    </Grid>
+
+
+                    <!-- Converter නැතිව — style දෙකක් -->
 <Button x:Name="StressTestButton"
         Content="{x:Bind StressButtonText, Mode=OneWay}"
         Click="StressTestButton_Click"
@@ -76,14 +131,188 @@ Margin="0,12,0,12">
 
             <!-- GPU CARD -->
             <Border Grid.Column="1" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush }" Padding="16" >
-                <StackPanel>
+                <StackPanel Spacing="3">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <FontIcon Foreground="Gray" Glyph="&#xE7F4;" FontSize="16"/>
                         <TextBlock Foreground="Gray" Text="GPU" FontWeight="SemiBold"/>
                     </StackPanel>
-                    
-                    <TextBlock Text="12.4 GB VRAM" FontSize="28" FontWeight="Bold" Foreground="White"/>
-                    <TextBlock Text="78°C | 2150 MHz" Foreground="#94A3B8"/>
+
+                    <TextBlock Margin="0,0,0,10" Text="{x:Bind GpuName, Mode=OneWay}" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap"/>
+
+
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="*"/>
+                          
+                        </Grid.ColumnDefinitions>
+
+
+                        <StackPanel Grid.Column="0" >
+                            <StackPanel >
+
+
+                                <TextBlock Text="{x:Bind GpuDisplayText, Mode=OneWay}" Foreground="#94A3B8"/>
+
+
+                                <Border  Height="80" 
+
+
+CornerRadius="4" 
+Background="#1A000000" 
+Margin="0,12,0,12">
+
+
+                                    <lvc:CartesianChart 
+    Background="Transparent" 
+    HorizontalAlignment="Stretch"
+    x:Name="Gpu3DChart"
+    Series="{x:Bind Gpu3DSeries}"
+    XAxes="{x:Bind Gpu3DXAxes}"
+    YAxes="{x:Bind Gpu3DYAxes}"/>
+                                </Border>
+
+                            </StackPanel>
+
+
+                            <StackPanel >
+
+
+                                <TextBlock Text="{x:Bind Gpu3DCopyDisplayText, Mode=OneWay}" Foreground="#94A3B8"/>
+
+
+                                <Border  Height="80" 
+
+
+CornerRadius="4" 
+Background="#1A000000" 
+Margin="0,12,0,12">
+
+
+                                    <lvc:CartesianChart 
+    Background="Transparent" 
+    HorizontalAlignment="Stretch"
+    x:Name="Gpu3DCopyChart"
+    Series="{x:Bind Gpu3DCopySeries}"
+    XAxes="{x:Bind Gpu3DCopyXAxes}"
+    YAxes="{x:Bind Gpu3DCopyYAxes}"/>
+                                </Border>
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+
+
+                        <StackPanel Grid.Column="2">
+
+                            <StackPanel  >
+
+                                <TextBlock  Text="{x:Bind Gpu3DVEDisplayText, Mode=OneWay}" Foreground="#94A3B8"/>
+
+                                <Border   Height="80" 
+
+
+CornerRadius="4" 
+Background="#1A000000" 
+Margin="0,12,0,12">
+
+
+                                    <lvc:CartesianChart 
+    Background="Transparent" 
+    HorizontalAlignment="Stretch"
+    x:Name="Gpu3DVEChart"
+    Series="{x:Bind Gpu3DVESeries}"
+    XAxes="{x:Bind Gpu3DVEXAxes}"
+    YAxes="{x:Bind Gpu3DVEYAxes}"/>
+                                </Border>
+
+                            </StackPanel>
+                            <StackPanel  >
+
+                                <TextBlock Text="{x:Bind Gpu3DVDDisplayText, Mode=OneWay}" Foreground="#94A3B8"/>
+
+                                <Border  Height="80" 
+
+
+CornerRadius="4" 
+Background="#1A000000" 
+Margin="0,12,0,12">
+
+
+                                    <lvc:CartesianChart 
+    Background="Transparent" 
+    HorizontalAlignment="Stretch"
+    x:Name="Gpu3DVDChart"
+    Series="{x:Bind Gpu3DVDSeries}"
+    XAxes="{x:Bind Gpu3DVDXAxes}"
+    YAxes="{x:Bind Gpu3DVDYAxes}"/>
+                                </Border>
+
+                            </StackPanel>
+                        </StackPanel>
+
+
+
+                    </Grid>
+
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+
+
+
+
+                        <Border Grid.Column="0" BorderBrush="{ThemeResource SystemAccentColor}" BorderThickness="1.5" HorizontalAlignment="Left" Width="100" CornerRadius="5" Background="{ThemeResource LayerFillColorDefaultBrush}">
+
+                            <StackPanel Margin="10" Spacing="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <Viewbox Margin="5" Width="40" Height="40">
+                                    <Path x:Name="FanIconGPU"
+Data="M243.78,318.4c-16.78,20.61-41.43,32.81-68.09,32.93l-.17-168.23c-2.31,21.98-12.28,42.1-28.63,57.13-32.04,29.45-79.93,31.12-113.8,3.68C12.62,227.34.06,202.58,0,175.68l168.22-.17c-21.43-2.25-41.12-11.82-56.01-27.44-32.18-33.75-32.52-85.78-.6-119.86C128.06,10.67,150.96.05,175.65,0l.17,167.5c2.56-21.57,12.3-41.22,28.21-56.03,33.97-31.6,85.75-31.48,119.46.49,17.33,16.43,27.8,39.16,27.84,63.68l-167.51.17c22.13,2.65,42.2,12.75,57.14,29.43,28.7,32.03,30.25,79.46,2.82,113.16Z"
+Fill="{ThemeResource SystemAccentColor}"
+RenderTransformOrigin="0.5,0.5">
+                                        <Path.RenderTransform>
+                                            <RotateTransform x:Name="FanRotateGPU"/>
+                                        </Path.RenderTransform>
+                                    </Path>
+                                </Viewbox>
+
+
+                                <TextBlock Text="{x:Bind GPUfanText, Mode=OneWay}" FontSize="15" Foreground="#94A3B8"/>
+                                <TextBlock Text="{x:Bind GpuTemperature, Mode=OneWay}" FontWeight="Bold" FontSize="15" Foreground="{ThemeResource SystemAccentColor}"/>
+                            </StackPanel>
+
+
+
+
+
+                        </Border>
+
+
+
+
+
+
+                        <StackPanel Grid.Column="2" >
+                            <TextBlock Text="{x:Bind GpuClock, Mode=OneWay}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="{x:Bind GPUCoreUsageText, Mode=OneWay}" Foreground="#94A3B8"/>
+                            <TextBlock Text="{x:Bind GpuMemoryUsed, Mode=OneWay}" Foreground="#94A3B8"/>
+                           
+                            <TextBlock Text="{x:Bind GPUPowerText, Mode=OneWay}" FontWeight="Bold" Foreground="{ThemeResource SystemAccentColor}"/>
+
+                        </StackPanel>
+                    </Grid>
+
+
                 </StackPanel>
             </Border>
 
