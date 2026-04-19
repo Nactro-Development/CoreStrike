@@ -137,7 +137,14 @@ RenderTransformOrigin="0.5,0.5">
                         <TextBlock Foreground="Gray" Text="GPU" FontWeight="SemiBold"/>
                     </StackPanel>
 
-                    <TextBlock Margin="0,0,0,10" Text="{x:Bind GpuName, Mode=OneWay}" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                  
+
+                    <ComboBox 
+                        x:Name="GpuSelectionComboBox"
+                        ItemsSource="{x:Bind AvailableGpus, Mode=OneWay}"
+                        SelectedIndex="{x:Bind SelectedGpuIndex, Mode=TwoWay}"
+                        PlaceholderText="Select GPU..."
+                        Margin="0,12,0,12"/>
 
 
 
@@ -316,17 +323,104 @@ RenderTransformOrigin="0.5,0.5">
                 </StackPanel>
             </Border>
 
-            <!-- RAM CARD -->
-            <Border Grid.Column="2" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush }" Padding="16" >
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <FontIcon Foreground="Gray" Glyph="&#xEEA0;" FontSize="16"/>
-                        <TextBlock Foreground="Gray" Text="RAM" FontWeight="SemiBold"/>
+
+
+
+            <Grid Grid.Column="2" >
+                <!-- ROWS -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <!-- Top cards -->
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                    <!-- Bottom section -->
+                </Grid.RowDefinitions>
+                <!-- RAM CARD -->
+                <Border Grid.Row="0" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush }" Padding="16" >
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Foreground="Gray" Glyph="&#xEEA0;" FontSize="16"/>
+                            <TextBlock Foreground="Gray" Text="MEMORY" FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Physical Memeory" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind MemoryUsageText, Mode=OneWay}" Foreground="#94A3B8"/>
+                        <Border Height="80" 
+                                
+          
+CornerRadius="4" 
+Background="#1A000000" 
+Margin="0,12,0,12">
+
+
+                            <lvc:CartesianChart 
+    Background="Transparent" 
+    HorizontalAlignment="Stretch"
+    x:Name="RAMChart"
+    Series="{x:Bind RAMSeries}"
+    XAxes="{x:Bind RAMXAxes}"
+    YAxes="{x:Bind RAMYAxes}"/>
+
+                        </Border>
+
+                        <TextBlock Text="{x:Bind MemoryTotal, Mode=OneWay}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+
+                        <TextBlock Text="{x:Bind MemoryUsed, Mode=OneWay}" Foreground="#94A3B8"/>
+
+
+
+
+
+
+
+
                     </StackPanel>
-                    <TextBlock Text="64 GB" FontSize="28" FontWeight="Bold" Foreground="White"/>
-                    <TextBlock Text="24.2 GB Used" Foreground="#94A3B8"/>
-                </StackPanel>
-            </Border>
+                </Border>
+
+
+                <Border Grid.Row="2"   CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush }" Padding="16" >
+
+                    <StackPanel>
+
+                        <TextBlock  Text="Virtual Memeory" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind VirtualUsage, Mode=OneWay}" Foreground="#94A3B8"/>
+                        <Border Height="80" 
+                                
+          
+CornerRadius="4" 
+Background="#1A000000" 
+Margin="0,12,0,12">
+
+
+                            <lvc:CartesianChart 
+    Background="Transparent" 
+    HorizontalAlignment="Stretch"
+    x:Name="VRAMChart"
+    Series="{x:Bind VRAMSeries}"
+    XAxes="{x:Bind VRAMXAxes}"
+    YAxes="{x:Bind VRAMYAxes}"/>
+
+                        </Border>
+
+
+
+                        <TextBlock Text="{x:Bind VirtualTotal, Mode=OneWay}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+
+                        <TextBlock Text="{x:Bind VirtualUsed, Mode=OneWay}" Foreground="#94A3B8"/>
+
+
+
+                    </StackPanel>
+
+                </Border>
+
+
+            </Grid>
+            
+            
+      
+
+
         </Grid>
 
         <!-- ================= BOTTOM SECTION ================= -->

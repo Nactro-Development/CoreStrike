@@ -18,6 +18,8 @@ namespace CoreStrike.DashBord
     {
         private Computer? _computer;
         private CancellationTokenSource? _cancellationTokenSource;
+        private List<IHardware> _gpuHardwareList = new();
+        private int _selectedGpuIndex = 0;
         private string _gpuName = string.Empty;
         private string _gpuClock = "0 MHz";
         private string _gpuTemperature = "0°C";
@@ -51,9 +53,45 @@ namespace CoreStrike.DashBord
             private set { if (_maxGpuTemperature != value) { _maxGpuTemperature = value; OnPropertyChanged(); } }
         }
 
+        public List<string> AvailableGpus { get; private set; } = new();
+
+        public int SelectedGpuIndex
+        {
+            get => _selectedGpuIndex;
+            set
+            {
+                if (_selectedGpuIndex != value)
+                {
+                    _selectedGpuIndex = value;
+                    OnPropertyChanged();
+                    ResetGpuData();
+                }
+            }
+        }
+
         public void ResetMaxTemperature()
         {
             MaxGpuTemperature = 0;
+        }
+
+        private void ResetGpuData()
+        {
+            GpuName = string.Empty;
+            GpuClock = "0 MHz";
+            GpuTemperature = "0°C";
+            GpuDisplayText = string.Empty;
+            Gpu3DCopyDisplayText = string.Empty;
+            Gpu3DVEDisplayText = string.Empty;
+            Gpu3DVDDisplayText = string.Empty;
+            GPUfanText = string.Empty;
+            GPUPowerText = string.Empty;
+            GPUCoreUsageText = string.Empty;
+            GpuMemoryUsed = "0 MB";
+            GpuMemoryTotal = "0 MB";
+            _gpuUsageData.Clear();
+            _gpu3DCopyUsageData.Clear();
+            _gpu3DVEUsageData.Clear();
+            _gpu3DVDUsageData.Clear();
         }
 
         public void SetXAxis(Axis xAxis)
@@ -204,6 +242,34 @@ namespace CoreStrike.DashBord
                 };
 
                 _computer.Open();
+
+                // Detect all GPUs
+                AvailableGpus.Clear();
+                _gpuHardwareList.Clear();
+
+                if (_computer != null)
+                {
+                    foreach (var hardware in _computer.Hardware)
+                    {
+                        if (hardware.HardwareType == HardwareType.GpuNvidia || 
+                            hardware.HardwareType == HardwareType.GpuIntel ||
+                            hardware.HardwareType == HardwareType.GpuAmd)
+                        {
+                            _gpuHardwareList.Add(hardware);
+                            AvailableGpus.Add(hardware.Name);
+                        }
+                    }
+                }
+
+                if (AvailableGpus.Count > 0)
+                {
+                    SelectedGpuIndex = 0;
+                    OnPropertyChanged(nameof(AvailableGpus));
+                }
+                else
+                {
+                    GpuDisplayText = "No GPU detected";
+                }
             }
             catch (Exception ex)
             {
@@ -240,9 +306,9 @@ namespace CoreStrike.DashBord
                         }
                     }
 
-                    var gpuHardware = _computer?.Hardware
-                        .FirstOrDefault(h => h.HardwareType == HardwareType.GpuNvidia || 
-                                            h.HardwareType == HardwareType.GpuIntel);
+                    var gpuHardware = _gpuHardwareList.Count > 0 && _selectedGpuIndex < _gpuHardwareList.Count
+                        ? _gpuHardwareList[_selectedGpuIndex]
+                        : null;
 
                     if (gpuHardware != null)
                     {
