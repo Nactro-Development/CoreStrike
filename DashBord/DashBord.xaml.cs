@@ -26,6 +26,7 @@ namespace CoreStrike.DashBord
         private MemoryMonitoringService? _memService;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        private StorageMonitoringService? _storageService;
 
         private CpuStressTestService _stressTest;
 
@@ -80,6 +81,23 @@ namespace CoreStrike.DashBord
         public string GPUCoreUsageText => _gpuService?.GPUCoreUsageText ?? "N/A";
 
         public List<string> AvailableGpus => _gpuService?.AvailableGpus ?? new();
+        public List<string> AvailableDrives => _storageService?.AvailableDrives ?? new();
+
+
+        public int SelectedDriveIndex
+        {
+            get => _storageService?.SelectedDriveIndex ?? 0;
+            set
+            {
+                if (_storageService != null && _storageService.SelectedDriveIndex != value)
+                {
+                    _storageService.SelectedDriveIndex = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
 
         public int SelectedGpuIndex
         {
@@ -93,6 +111,25 @@ namespace CoreStrike.DashBord
                 }
             }
         }
+
+
+        public string DriveName => _storageService?.DriveName ?? string.Empty;
+        public string DriveModel => _storageService?.DriveModel ?? string.Empty;
+        public string DriveType => _storageService?.DriveType ?? "N/A";
+        public string DriveHealth => _storageService?.DriveHealth ?? "N/A";
+        public string DriveTemperature => _storageService?.DriveTemperature ?? "N/A";
+        public string DriveUsedSpace => _storageService?.DriveUsedSpace ?? "N/A";
+        public string DriveFreeSpace => _storageService?.DriveFreeSpace ?? "N/A";
+        public string DriveTotalSpace => _storageService?.DriveTotalSpace ?? "N/A";
+        public string DriveUsageText => _storageService?.DriveUsageText ?? "N/A";
+        public string DriveReadRate => _storageService?.DriveReadRate ?? "N/A";
+        public string DriveWriteRate => _storageService?.DriveWriteRate ?? "N/A";
+        public string DriveThroughput => _storageService?.DriveThroughput ?? "N/A";
+        public string DriveLifeText => _storageService?.DriveLifeText ?? "N/A";
+        public string PowerOnHours => _storageService?.PowerOnHours ?? "N/A";
+
+
+
 
         // ── Motherboard Properties ────────────────────────────
         public string CpufanText => _mbService?.Fan1Rpm ?? string.Empty;
@@ -120,9 +157,18 @@ namespace CoreStrike.DashBord
             _mbService = new MotherboardMonitoringService();
             // ✅ FIX: _memService ව InitializeChart() කලින් new කරන්න
             _memService = new MemoryMonitoringService();
+            _storageService = new StorageMonitoringService();
 
             // ✅ InitializeChart() call කරන්නේ සියලු services ready වෙලා
             InitializeChart();
+
+            _storageService.PropertyChanged += (s, e) =>
+            {
+                OnPropertyChanged(e.PropertyName);
+                if (e.PropertyName == nameof(StorageMonitoringService.AvailableDrives))
+                    OnPropertyChanged(nameof(AvailableDrives));
+            };
+
 
             // PropertyChanged wiring
             _cpuService.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
@@ -144,6 +190,8 @@ namespace CoreStrike.DashBord
             _gpuService.StartMonitoring();
             _mbService.StartMonitoring();
             _memService.StartMonitoring();
+            _storageService.StartMonitoring();
+
 
             // Stress test
             _stressTest = new CpuStressTestService(_cpuService);
@@ -160,6 +208,7 @@ namespace CoreStrike.DashBord
                 _gpuService?.Cleanup();
                 _mbService?.Cleanup();
                 _memService?.Cleanup();
+                _storageService?.Cleanup();
                 _stressTest.Stop();
             };
 

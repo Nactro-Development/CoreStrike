@@ -434,16 +434,91 @@ Margin="0,12,0,12">
             </Grid.ColumnDefinitions>
 
             <!-- LARGE STORAGE CARD -->
-            <Border Grid.Column="0" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush }" Padding="20" >
+            <Border Grid.Column="0" CornerRadius="12"
+        Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="20">
                 <StackPanel Spacing="10">
-                    <TextBlock Text="NVMe Gen5 Performance" Foreground="Gray"/>
-                    <TextBlock Text="Read: 12400 MB/s" FontSize="24" Foreground="White"/>
-                    <TextBlock Text="Write: 10800 MB/s" FontSize="24" Foreground="White"/>
-                    <TextBlock Text="Capacity: 2 TB" Foreground="#94A3B8"/>
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <Button Content="Deep Scan"/>
-                        <Button Content="Optimize"/>
+
+                    <!-- Header -->
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Foreground="Gray" Glyph="&#xEDA2;" FontSize="16"/>
+                        <TextBlock Foreground="Gray" Text="STORAGE" FontWeight="SemiBold"/>
                     </StackPanel>
+
+                    <!-- Drive selector ComboBox -->
+                    <ComboBox x:Name="DriveSelectionComboBox"
+                  ItemsSource="{x:Bind AvailableDrives, Mode=OneWay}"
+                  SelectedIndex="{x:Bind SelectedDriveIndex, Mode=TwoWay}"
+                  PlaceholderText="Select Drive..."
+                  HorizontalAlignment="Stretch"
+                  Margin="0,4,0,8"/>
+
+                    <!-- Drive name + type badge -->
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="{x:Bind DriveName, Mode=OneWay}"
+                       FontSize="18" FontWeight="SemiBold"
+                       TextWrapping="Wrap"/>
+                        <Border Background="{ThemeResource SystemAccentColor}"
+                    CornerRadius="4" Padding="6,2">
+                            <TextBlock Text="{x:Bind DriveType, Mode=OneWay}"
+                           FontSize="11" FontWeight="Bold" Foreground="White"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- ── Two-column stats grid ── -->
+                    <Grid ColumnSpacing="20" RowSpacing="10" Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Total capacity -->
+                        <StackPanel Grid.Row="0" Grid.Column="0">
+                            <TextBlock Text="Total Capacity" Foreground="#94A3B8" FontSize="11"/>
+                            <TextBlock Text="{x:Bind DriveTotalSpace, Mode=OneWay}"
+                           FontSize="24" FontWeight="Bold"/>
+                        </StackPanel>
+
+                        <!-- Usage % -->
+                        <StackPanel Grid.Row="0" Grid.Column="1">
+                            <TextBlock Text="Usage" Foreground="#94A3B8" FontSize="11"/>
+                            <TextBlock Text="{x:Bind DriveUsageText, Mode=OneWay}"
+                           FontSize="24" FontWeight="Bold"
+                           Foreground="{ThemeResource SystemAccentColor}"/>
+                        </StackPanel>
+
+                        <!-- Used / Free -->
+                        <StackPanel Grid.Row="1" Grid.Column="0">
+                            <TextBlock Text="{x:Bind DriveUsedSpace, Mode=OneWay}" Foreground="White"/>
+                            <TextBlock Text="{x:Bind DriveFreeSpace, Mode=OneWay}" Foreground="#94A3B8"/>
+                        </StackPanel>
+
+                        <!-- Temperature + Health -->
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <TextBlock Text="{x:Bind DriveTemperature, Mode=OneWay}"
+                           Foreground="{ThemeResource SystemAccentColor}"
+                           FontWeight="Bold"/>
+                            <TextBlock Text="{x:Bind DriveHealth, Mode=OneWay}" Foreground="#94A3B8"/>
+                        </StackPanel>
+
+                        <!-- Read / Write -->
+                        <StackPanel Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="{x:Bind DriveReadRate, Mode=OneWay}" Foreground="White"/>
+                            <TextBlock Text="{x:Bind DriveWriteRate, Mode=OneWay}" Foreground="White"/>
+                        </StackPanel>
+
+                        <!-- Life + Power-On -->
+                        <StackPanel Grid.Row="2" Grid.Column="1">
+                            <TextBlock Text="{x:Bind DriveLifeText, Mode=OneWay}" Foreground="#94A3B8"/>
+                            <TextBlock Text="{x:Bind PowerOnHours, Mode=OneWay}" Foreground="#94A3B8"/>
+                        </StackPanel>
+
+                    </Grid>
                 </StackPanel>
             </Border>
 
