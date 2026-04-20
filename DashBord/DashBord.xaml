@@ -480,7 +480,7 @@ Margin="0,12,0,12">
                         <!-- Total capacity -->
                         <StackPanel Grid.Row="0" Grid.Column="0">
                             <TextBlock Text="Total Capacity" Foreground="#94A3B8" FontSize="11"/>
-                            <TextBlock Text="{x:Bind DriveTotalSpace, Mode=OneWay}"
+                            <TextBlock Text="{x:Bind DriveUsedSpace, Mode=OneWay}"
                            FontSize="24" FontWeight="Bold"/>
                         </StackPanel>
 

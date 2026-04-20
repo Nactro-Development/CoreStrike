@@ -36,6 +36,10 @@ namespace CoreStrike.DashBord
         private string _powerOnHours = "N/A";
         private string _driveLifeText = "N/A";   // remaining life %
 
+        private string _systemTotalSpace = "N/A";
+        private string _systemUsedSpace = "N/A";
+        private string _systemFreeSpace = "N/A";
+
         // Maps display name → LibreHardwareMonitor IHardware
         private Dictionary<string, IHardware> _driveMap = new();
 
@@ -146,6 +150,24 @@ namespace CoreStrike.DashBord
             private set { if (_driveLifeText != value) { _driveLifeText = value; OnPropertyChanged(); } }
         }
 
+        public string SystemTotalSpace
+        {
+            get => _systemTotalSpace;
+            private set { if (_systemTotalSpace != value) { _systemTotalSpace = value; OnPropertyChanged(); } }
+        }
+
+        public string SystemUsedSpace
+        {
+            get => _systemUsedSpace;
+            private set { if (_systemUsedSpace != value) { _systemUsedSpace = value; OnPropertyChanged(); } }
+        }
+
+        public string SystemFreeSpace
+        {
+            get => _systemFreeSpace;
+            private set { if (_systemFreeSpace != value) { _systemFreeSpace = value; OnPropertyChanged(); } }
+        }
+
         // ── Constructor ────────────────────────────────────────
         public StorageMonitoringService()
         {
@@ -185,6 +207,7 @@ namespace CoreStrike.DashBord
                 _computer.Open();
 
                 BuildDriveList();
+                UpdateSystemTotalStorage();
             }
             catch (Exception ex)
             {
@@ -229,20 +252,22 @@ namespace CoreStrike.DashBord
 
             if (int.TryParse(ident.Split('/').LastOrDefault(), out int idx))
             {
-                letters = GetDriveLettersForPhysical(idx);
+                letters = GetDriveLabelForPhysical(idx);
             }
 
             return string.IsNullOrEmpty(letters) ? model : $"{model}  ({letters})";
         }
 
-        // Map PhysicalDriveN → drive letters via DriveInfo
-        private static string GetDriveLettersForPhysical(int physicalIndex)
+        // Get drive letter display for physical drive
+        private static string GetDriveLabelForPhysical(int physicalIndex)
         {
             try
             {
-                // WMI-free approach: query Win32 through DriveInfo isn't directly possible,
-                // so we return empty here and let the model name speak for itself.
-                // For a full mapping you'd use WMI: Win32_DiskDriveToDiskPartition.
+                var driveLetters = GetDriveLettersForPhysicalDriveStatic(physicalIndex);
+                if (driveLetters.Count > 0)
+                {
+                    return string.Join(", ", driveLetters.Select(c => $"{c}:"));
+                }
                 return string.Empty;
             }
             catch
@@ -278,7 +303,14 @@ namespace CoreStrike.DashBord
                         if (firstRun)
                         {
                             BuildDriveList();
+                            UpdateSystemTotalStorage();
                             firstRun = false;
+                        }
+
+                        // Update system storage every 5 seconds
+                        if (DateTime.UtcNow.Second % 5 == 0)
+                        {
+                            UpdateSystemTotalStorage();
                         }
 
                         // Update only the selected drive
@@ -483,27 +515,114 @@ namespace CoreStrike.DashBord
 
             try
             {
-                // Match drives by model name substring — rough but WMI-free
-                string model = hw.Name.ToLowerInvariant();
+                // Extract physical drive index from hw.Identifier
+                // Format: /hdd/0 or /hdd/1 etc.
+                string ident = hw.Identifier.ToString();
+                int physicalIndex = -1;
 
-                foreach (var drive in DriveInfo.GetDrives())
+                if (int.TryParse(ident.Split('/').LastOrDefault(), out int idx))
                 {
-                    if (!drive.IsReady) continue;
-
-                    // We can't perfectly map physical→logical without WMI,
-                    // so aggregate all logical drives on first physical match.
-                    // If you have multiple physical drives, this aggregates per-drive
-                    // by comparing the root path total size across drives.
-                    totalBytes += drive.TotalSize;
-                    usedBytes += drive.TotalSize - drive.AvailableFreeSpace;
+                    physicalIndex = idx;
                 }
 
-                // ⚠️ Simple approach: if only 1 drive detected, this is accurate.
-                // For multi-drive setups, replace with WMI Win32_DiskDriveToDiskPartition query.
+                // Get drive letters and match by physical drive
+                // This is a simplified approach without WMI
+                var driveLetters = GetDriveLettersForPhysicalDriveStatic(physicalIndex);
+
+                if (driveLetters.Count > 0)
+                {
+                    foreach (var letter in driveLetters)
+                    {
+                        try
+                        {
+                            var drive = DriveInfo.GetDrives().FirstOrDefault(d => d.Name.StartsWith(letter.ToString()));
+                            if (drive != null && drive.IsReady)
+                            {
+                                totalBytes += drive.TotalSize;
+                                usedBytes += drive.TotalSize - drive.AvailableFreeSpace;
+                            }
+                        }
+                        catch { }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"DriveInfo error: {ex.Message}");
+            }
+        }
+
+        // ── Get drive letters for physical drive (simplified) ──
+        private static List<char> GetDriveLettersForPhysicalDriveStatic(int physicalIndex)
+        {
+            var letters = new List<char>();
+
+            try
+            {
+                // Fallback: Try to match drive by checking all drives
+                // In a single-drive system or without WMI, return all ready drives
+                // For multi-drive accurate mapping, WMI is needed.
+                foreach (var drive in DriveInfo.GetDrives())
+                {
+                    if (drive.IsReady && drive.DriveType == System.IO.DriveType.Fixed)
+                    {
+                        letters.Add(drive.Name[0]);
+                    }
+                }
+
+                // Limit to the approximate physical drive count
+                // (This is a rough heuristic without WMI)
+                if (letters.Count > physicalIndex + 1)
+                {
+                    return letters.GetRange(physicalIndex, 1);
+                }
+
+                return letters;
+            }
+            catch
+            {
+                return letters;
+            }
+        }
+
+        // ── Calculate total system storage ──────────────────
+        private void UpdateSystemTotalStorage()
+        {
+            float totalBytes = 0;
+            float usedBytes = 0;
+
+            try
+            {
+                foreach (var drive in DriveInfo.GetDrives())
+                {
+                    if (!drive.IsReady) continue;
+                    totalBytes += drive.TotalSize;
+                    usedBytes += drive.TotalSize - drive.AvailableFreeSpace;
+                }
+
+                if (totalBytes > 0)
+                {
+                    float totalGb = totalBytes / 1e9f;
+                    float usedGb = usedBytes / 1e9f;
+                    float freeGb = (totalBytes - usedBytes) / 1e9f;
+
+                    SystemTotalSpace = $"Total: {totalGb:F1} GB";
+                    SystemUsedSpace = $"Used: {usedGb:F1} GB";
+                    SystemFreeSpace = $"Free: {freeGb:F1} GB";
+                }
+                else
+                {
+                    SystemTotalSpace = "N/A";
+                    SystemUsedSpace = "N/A";
+                    SystemFreeSpace = "N/A";
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"System storage error: {ex.Message}");
+                SystemTotalSpace = "N/A";
+                SystemUsedSpace = "N/A";
+                SystemFreeSpace = "N/A";
             }
         }
 

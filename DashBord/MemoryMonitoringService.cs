@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,33 +14,50 @@ namespace CoreStrike.DashBord
 {
     public sealed class MemoryMonitoringService : INotifyPropertyChanged
     {
+        // ── WinAPI: GlobalMemoryStatusEx ──────────────────────
+        [StructLayout(LayoutKind.Sequential)]
+        private struct MemoryStatusEx
+        {
+            public uint dwLength;
+            public uint dwMemoryLoad;
+            public ulong ullTotalPhys;
+            public ulong ullAvailPhys;
+            public ulong ullTotalPageFile;
+            public ulong ullAvailPageFile;
+            public ulong ullTotalVirtual;
+            public ulong ullAvailVirtual;
+            public ulong ullAvailExtendedVirtual;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool GlobalMemoryStatusEx(ref MemoryStatusEx lpBuffer);
+
+        // ── Fields ────────────────────────────────────────────
         private Computer? _computer;
         private CancellationTokenSource? _cancellationTokenSource;
 
-        // ── Backing fields ────────────────────────────────────
-        private string _memoryUsed        = "0 GB";
-        private string _memoryAvailable   = "0 GB";
-        private string _memoryTotal       = "0 GB";
-        private string _memoryUsageText   = "0%";
-        private string _memoryLoadText    = "Usage: 0%";
-        private string _virtualUsed       = "0 GB";
-        private string _virtualTotal      = "0 GB";
+        private string _memoryUsed = "0 GB";
+        private string _memoryAvailable = "0 GB";
+        private string _memoryTotal = "0 GB";
+        private string _memoryUsageText = "0%";
+        private string _memoryLoadText = "Usage: 0%";
+        private string _virtualUsed = "0 GB";
+        private string _virtualTotal = "0 GB";
         private string _virtualUsage = "0 %";
-        private float  _memoryUsagePercent = 0f;
-        private float  _maxMemoryUsage    = 0f;
+        private float _memoryUsagePercent = 0f;
+        private float _maxMemoryUsage = 0f;
 
         private Axis? _xAxis;
         private Axis? _VxAxis;
-        private int   _dataPointCount     = 0;
-        private int   _VdataPointCount     = 0;
-
+        private int _dataPointCount = 0;
+        private int _VdataPointCount = 0;
 
         private readonly ObservableCollection<ObservablePoint> _memoryUsageData = new();
         private readonly ObservableCollection<ObservablePoint> _VmemoryUsageData = new();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        // ── Public Properties ────────────────────────────────
+        // ── Public Properties ─────────────────────────────────
         public string MemoryUsed
         {
             get => _memoryUsed;
@@ -109,15 +127,9 @@ namespace CoreStrike.DashBord
             InitializeHardwareMonitoring();
         }
 
-        // ── Axis wiring (same pattern as GPU service) ─────────
-        public void SetXAxis(Axis xAxis)
-        {
-            _xAxis = xAxis;
-        }
-        public void SetVXAxis(Axis VxAxis)
-        {
-            _VxAxis = VxAxis;
-        }
+        // ── Axis Wiring ───────────────────────────────────────
+        public void SetXAxis(Axis xAxis) => _xAxis = xAxis;
+        public void SetVXAxis(Axis VxAxis) => _VxAxis = VxAxis;
 
         // ── Lifecycle ─────────────────────────────────────────
         public void StartMonitoring()
@@ -129,10 +141,7 @@ namespace CoreStrike.DashBord
             }
         }
 
-        public void StopMonitoring()
-        {
-            _cancellationTokenSource?.Cancel();
-        }
+        public void StopMonitoring() => _cancellationTokenSource?.Cancel();
 
         public void Cleanup()
         {
@@ -140,9 +149,31 @@ namespace CoreStrike.DashBord
             _computer?.Close();
         }
 
-        public void ResetMaxUsage()
+        public void ResetMaxUsage() => MaxMemoryUsage = 0;
+
+        // ── WinAPI Helper ─────────────────────────────────────
+        /// <summary>
+        /// Returns (pageFileUsedGb, pageFileTotalGb, loadPercent) from the Windows
+        /// kernel. ullTotalPageFile = RAM + page file on disk (the commit limit).
+        /// </summary>
+        private static (float usedGb, float totalGb, float loadPercent) GetVirtualMemoryInfo()
         {
-            MaxMemoryUsage = 0;
+            var status = new MemoryStatusEx
+            {
+                dwLength = (uint)Marshal.SizeOf<MemoryStatusEx>()
+            };
+
+            if (!GlobalMemoryStatusEx(ref status))
+                return (0f, 0f, 0f);
+
+            const float toGb = 1024f * 1024f * 1024f;
+
+            float total = status.ullTotalPageFile / toGb;
+            float avail = status.ullAvailPageFile / toGb;
+            float used = total - avail;
+            float loadPct = total > 0f ? (used / total) * 100f : 0f;
+
+            return (used, total, loadPct);
         }
 
         // ── Hardware Init ─────────────────────────────────────
@@ -173,6 +204,7 @@ namespace CoreStrike.DashBord
             {
                 try
                 {
+                    // ── Update hardware sensors ───────────────
                     if (_computer != null)
                     {
                         foreach (var hardware in _computer.Hardware)
@@ -183,13 +215,11 @@ namespace CoreStrike.DashBord
                         }
                     }
 
-                    float memoryLoad      = 0;
-                    float memoryUsedMb    = 0;
-                    float memoryAvailMb   = 0;
-                    float virtualUsedMb   = 0;
-                    float virtualTotalMb  = 0;
-                    float vmemoryLoad     = 0;
+                    float memoryLoad = 0f;
+                    float memoryUsedMb = 0f;
+                    float memoryAvailMb = 0f;
 
+                    // ── Read physical RAM from LibreHardwareMonitor ──
                     if (_computer != null)
                     {
                         foreach (var hardware in _computer.Hardware)
@@ -210,62 +240,45 @@ namespace CoreStrike.DashBord
                             foreach (var sensor in hardware.Sensors)
                             {
                                 string name = sensor.Name.ToLower();
-                                float  val  = sensor.Value ?? 0;
+                                float val = sensor.Value ?? 0f;
 
-                                // ── Load ─────────────────────────────────
+                                // Physical load %
                                 if (sensor.SensorType == SensorType.Load && name == "memory")
-                                {
                                     memoryLoad = val;
-                                }
-                                // ── Load ─────────────────────────────────
-                                if (sensor.SensorType == SensorType.Load && name == "virtual memory")
-                                {
-                                    vmemoryLoad = val;
-                                }
 
-                                // ── Physical Memory ───────────────────────
+                                // Physical used / available (GB)
                                 if (sensor.SensorType == SensorType.Data)
                                 {
-                                    if (name == "memory used")
-                                        memoryUsedMb = val;
-                                    else if (name == "memory available")
-                                        memoryAvailMb = val;
-                                }
-
-                                // ── Virtual Memory ────────────────────────
-                                if (sensor.SensorType == SensorType.Data)
-                                {
-                                    if (name == "virtual memory used")
-                                        virtualUsedMb = val;
-                                    else if (name == "virtual memory available")
-                                        virtualTotalMb = val + virtualUsedMb; // total = used + free
+                                    if (name == "memory used") memoryUsedMb = val;
+                                    else if (name == "memory available") memoryAvailMb = val;
                                 }
                             }
                         }
                     }
 
-                    // ── Derived values ────────────────────────────────
+                    // ── Virtual / page-file via WinAPI ────────
+                    var (vUsedGb, vTotalGb, vLoadPct) = GetVirtualMemoryInfo();
+
+                    // ── Derived values ────────────────────────
                     float totalMb = memoryUsedMb + memoryAvailMb;
 
                     MemoryUsagePercent = memoryLoad;
-                    MemoryUsageText    = $"RAM Usage: {memoryLoad:F0}%";
-                    MemoryLoadText     = $"Usage: {memoryLoad:F0}%";
+                    MemoryUsageText = $"RAM Usage: {memoryLoad:F0}%";
+                    MemoryLoadText = $"Usage: {memoryLoad:F0}%";
 
-                    MemoryUsed      = memoryUsedMb > 0  ? $"RAM Used: {memoryUsedMb:F1} GB"  : "N/A";
-                    MemoryAvailable = memoryAvailMb > 0 ? $"{memoryAvailMb:F1} GB" : "N/A";
-                    MemoryTotal     = totalMb > 0        ? $"{totalMb:F1} GB"       : "N/A";
+                    MemoryUsed = memoryUsedMb > 0f ? $"RAM Used: {memoryUsedMb:F1} GB" : "N/A";
+                    MemoryAvailable = memoryAvailMb > 0f ? $"{memoryAvailMb:F1} GB" : "N/A";
+                    MemoryTotal = totalMb > 0f ? $"{totalMb:F1} GB" : "N/A";
 
-                    VirtualUsed  = virtualUsedMb > 0  ? $"VRAM Used: {virtualUsedMb:F1} GB"  : "N/A";
-                    VirtualTotal = virtualTotalMb > 0 ? $"{virtualTotalMb:F1} GB" : "N/A";
-                    VirtualUsage = vmemoryLoad > 0 ? $"VRAM Usage: {vmemoryLoad:F1} %" : "N/A";
+                    VirtualUsed = vUsedGb > 0f ? $"Page File Used: {vUsedGb:F1} GB" : "N/A";
+                    VirtualTotal = vTotalGb > 0f ? $"{vTotalGb:F1} GB" : "N/A";
+                    VirtualUsage = vLoadPct > 0f ? $"Page File: {vLoadPct:F1}%" : "N/A";
 
                     // Track peak
                     if (memoryLoad > MaxMemoryUsage)
                         MaxMemoryUsage = memoryLoad;
 
-
-
-                    // ── Chart data (sliding 50-point window) ──────────
+                    // ── Physical RAM chart (sliding 50-point window) ──
                     _memoryUsageData.Add(new ObservablePoint(_dataPointCount, memoryLoad));
                     if (_memoryUsageData.Count > 50)
                         _memoryUsageData.RemoveAt(0);
@@ -286,9 +299,8 @@ namespace CoreStrike.DashBord
 
                     _dataPointCount++;
 
-
-                    // ── Chart data (sliding 50-point window) ──────────
-                    _VmemoryUsageData.Add(new ObservablePoint(_VdataPointCount, vmemoryLoad));
+                    // ── Page-file chart (sliding 50-point window) ─────
+                    _VmemoryUsageData.Add(new ObservablePoint(_VdataPointCount, vLoadPct));
                     if (_VmemoryUsageData.Count > 50)
                         _VmemoryUsageData.RemoveAt(0);
 
@@ -323,8 +335,6 @@ namespace CoreStrike.DashBord
         }
 
         private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

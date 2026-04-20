@@ -252,7 +252,7 @@ namespace CoreStrike.DashBord
 
                             // ── Package Power ──────────────────────────────────
                             if (sensor.SensorType == SensorType.Power &&
-                                sensor.Name.Equals("Package", StringComparison.OrdinalIgnoreCase) &&
+                                sensor.Name.Equals("CPU Package", StringComparison.OrdinalIgnoreCase) &&
                                 sensor.Value.HasValue)
                             {
                                 CpuPackagePower = $"{sensor.Value.Value:F1} W";
@@ -261,8 +261,7 @@ namespace CoreStrike.DashBord
 
                             // ── Core SVI2 TFN Voltage ──────────────────────────
                             if (sensor.SensorType == SensorType.Voltage &&
-                                sensor.Name.Contains("Core", StringComparison.OrdinalIgnoreCase) &&
-                                sensor.Name.Contains("SVI2", StringComparison.OrdinalIgnoreCase) &&
+                                sensor.Name.Contains("CPU Core", StringComparison.OrdinalIgnoreCase) &&
                                 sensor.Value.HasValue)
                             {
                                 CpuCoreSvi2Voltage = $"{sensor.Value.Value:F3} V";
@@ -271,9 +270,9 @@ namespace CoreStrike.DashBord
 
 
                             // ── SoC SVI2 TFN Voltage ───────────────────────────
-                            if (sensor.SensorType == SensorType.Voltage &&
-                                sensor.Name.Contains("SoC", StringComparison.OrdinalIgnoreCase) &&
-                                sensor.Name.Contains("SVI2", StringComparison.OrdinalIgnoreCase) &&
+                            if (sensor.SensorType == SensorType.Clock &&
+                                sensor.Name.Contains("Bus Speed", StringComparison.OrdinalIgnoreCase) &&
+                               
                                 sensor.Value.HasValue)
                             {
                                 CpuSocSvi2Voltage = $"{sensor.Value.Value:F3} V";

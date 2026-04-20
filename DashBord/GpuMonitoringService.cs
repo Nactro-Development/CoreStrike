@@ -239,45 +239,38 @@ namespace CoreStrike.DashBord
                 _computer = new Computer
                 {
                     IsGpuEnabled = true,
+                    IsCpuEnabled = true, // CPU integrated graphics sometimes here
                 };
 
                 _computer.Open();
 
-                // Detect all GPUs
+                // ✅ DEBUG: ALL hardware print කරන්න
+                foreach (var hardware in _computer.Hardware)
+                {
+                    Debug.WriteLine($"Found Hardware: [{hardware.HardwareType}] {hardware.Name}");
+                }
+
                 AvailableGpus.Clear();
                 _gpuHardwareList.Clear();
 
-                if (_computer != null)
+                foreach (var hardware in _computer.Hardware)
                 {
-                    foreach (var hardware in _computer.Hardware)
+                    if (hardware.HardwareType == HardwareType.GpuNvidia ||
+                        hardware.HardwareType == HardwareType.GpuIntel ||
+                        hardware.HardwareType == HardwareType.GpuAmd)
                     {
-                        if (hardware.HardwareType == HardwareType.GpuNvidia || 
-                            hardware.HardwareType == HardwareType.GpuIntel ||
-                            hardware.HardwareType == HardwareType.GpuAmd)
-                        {
-                            _gpuHardwareList.Add(hardware);
-                            AvailableGpus.Add(hardware.Name);
-                        }
+                        _gpuHardwareList.Add(hardware);
+                        AvailableGpus.Add(hardware.Name);
+                        Debug.WriteLine($"✅ Added GPU: {hardware.Name}");
                     }
-                }
-
-                if (AvailableGpus.Count > 0)
-                {
-                    SelectedGpuIndex = 0;
-                    OnPropertyChanged(nameof(AvailableGpus));
-                }
-                else
-                {
-                    GpuDisplayText = "No GPU detected";
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error initializing GPU hardware monitoring: {ex.Message}");
-                Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-                GpuDisplayText = $"Error: {ex.Message}";
+                Debug.WriteLine($"Error: {ex.Message}");
             }
         }
+
 
         private async Task MonitorGpuAsync(CancellationToken cancellationToken)
         {
