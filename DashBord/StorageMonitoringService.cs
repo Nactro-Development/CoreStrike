@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -263,7 +264,7 @@ namespace CoreStrike.DashBord
         {
             try
             {
-                var driveLetters = GetDriveLettersForPhysicalDriveStatic(physicalIndex);
+                var driveLetters = GetDriveLettersForPhysicalDrive(physicalIndex);
                 if (driveLetters.Count > 0)
                 {
                     return string.Join(", ", driveLetters.Select(c => $"{c}:"));
@@ -340,6 +341,27 @@ namespace CoreStrike.DashBord
             }
         }
 
+        // ── Helper: Auto-format speed with appropriate unit (KB/s, MB/s, GB/s) ──
+        private static string FormatSpeed(float value)
+        {
+            if (value <= 0) return "0";
+
+            // Assume value is MB/s (LibreHardwareMonitor default for Throughput)
+            if (value >= 1024)
+            {
+                return $"{value / 1024f:F1} KB/s";
+            }
+            else if (value >= 1)
+            {
+                return $"{value:F1} MB/s";
+            }
+            else
+            {
+                return $"{value * 1024f:F0} GB/s";
+            }
+        }
+
+
         // ── Parse sensors and update properties ───────────────
         private bool _dumped = false;
         private void ParseAndPublish(IHardware hw)
@@ -357,8 +379,14 @@ namespace CoreStrike.DashBord
             float temperature = 0;
             float usedBytes = 0;
             float totalBytes = 0;
-            float readRate = 0;
-            float writeRate = 0;
+
+            float readSpeed = 0;      // MB/s
+            float writeSpeed = 0;
+
+            float totalReadGb = 0;    // GB
+            float totalWrittenGb = 0;
+
+
             float life = -1;   // -1 = not available
             float powerOn = -1;
             float usageLoad = 0;
@@ -374,7 +402,7 @@ namespace CoreStrike.DashBord
                 switch (sensor.SensorType)
                 {
                     case SensorType.Temperature:
-                        if (name.Contains("temperature") || name == "drive temperature")
+                        if (name.Contains("composite temperature") || (name == "drive temperature") || name == "temperature")
                             temperature = val;
                         break;
 
@@ -386,21 +414,28 @@ namespace CoreStrike.DashBord
                             usageWrite = val;
                         break;
 
-                 
+
 
                     case SensorType.Data:
-                        if (name == "data read" || name.Contains("total bytes read"))
-                            readRate = val;          // GB total — we'll show it as-is
-                        else if (name == "data written" || name.Contains("total bytes written"))
-                            writeRate = val;
+                        if (name == "data read")
+                            totalReadGb = val;
+
+                        else if (name == "data written")
+                            totalWrittenGb = val;
                         break;
 
                     case SensorType.Throughput:
-                        if (name.Contains("read"))
-                            readRate = val;          // MB/s
-                        else if (name.Contains("write"))
-                            writeRate = val;
+                        if (sensor.Value.HasValue)
+                        {
+                            if (name.Contains("read"))
+                                readSpeed = val;
+
+                            else if (name.Contains("write"))
+                                writeSpeed = val;
+                        }
                         break;
+
+
 
                     case SensorType.Level:
                         {
@@ -468,18 +503,20 @@ namespace CoreStrike.DashBord
             }
 
             // Read / Write — distinguish throughput (MB/s) vs total data (GB)
-            bool isThroughput = hw.Sensors.Any(s => s.SensorType == SensorType.Throughput);
-            if (isThroughput)
+            bool hasThroughput = hw.Sensors.Any(s =>
+     s.SensorType == SensorType.Throughput &&
+     s.Value.HasValue);
+
+            if (hasThroughput)
             {
-                DriveReadRate = readRate > 0 ? $"Read:  {readRate:F1} MB/s" : "Read:  0 MB/s";
-                DriveWriteRate = writeRate > 0 ? $"Write: {writeRate:F1} MB/s" : "Write: 0 MB/s";
-                DriveThroughput = $"{readRate + writeRate:F1} MB/s";
+                DriveReadRate = $"R: {FormatSpeed(readSpeed)}";
+                DriveWriteRate = $"W: {FormatSpeed(writeSpeed)}";
+                DriveThroughput = FormatSpeed(readSpeed + writeSpeed);
             }
             else
             {
-                // Total-data sensors (Data type) are in GB
-                DriveReadRate = readRate > 0 ? $"Total Read:  {readRate:F1} GB" : "N/A";
-                DriveWriteRate = writeRate > 0 ? $"Total Write: {writeRate:F1} GB" : "N/A";
+                DriveReadRate = totalReadGb > 0 ? $"Read: {totalReadGb:F0} GB" : "N/A";
+                DriveWriteRate = totalWrittenGb > 0 ? $"Written: {totalWrittenGb:F0} GB" : "N/A";
                 DriveThroughput = "N/A";
             }
             float helth = spare - life;
@@ -527,7 +564,7 @@ namespace CoreStrike.DashBord
 
                 // Get drive letters and match by physical drive
                 // This is a simplified approach without WMI
-                var driveLetters = GetDriveLettersForPhysicalDriveStatic(physicalIndex);
+                var driveLetters = GetDriveLettersForPhysicalDrive(physicalIndex);
 
                 if (driveLetters.Count > 0)
                 {
@@ -553,36 +590,37 @@ namespace CoreStrike.DashBord
         }
 
         // ── Get drive letters for physical drive (simplified) ──
-        private static List<char> GetDriveLettersForPhysicalDriveStatic(int physicalIndex)
+        private static List<char> GetDriveLettersForPhysicalDrive(int physicalIndex)
         {
-            var letters = new List<char>();
+            var result = new List<char>();
 
             try
             {
-                // Fallback: Try to match drive by checking all drives
-                // In a single-drive system or without WMI, return all ready drives
-                // For multi-drive accurate mapping, WMI is needed.
-                foreach (var drive in DriveInfo.GetDrives())
+                using var searcher = new ManagementObjectSearcher(
+                    "SELECT * FROM Win32_DiskDrive");
+
+                foreach (ManagementObject disk in searcher.Get())
                 {
-                    if (drive.IsReady && drive.DriveType == System.IO.DriveType.Fixed)
+                    if (!disk["Index"].ToString().Equals(physicalIndex.ToString()))
+                        continue;
+
+                    foreach (ManagementObject partition in disk.GetRelated("Win32_DiskPartition"))
                     {
-                        letters.Add(drive.Name[0]);
+                        foreach (ManagementObject logical in partition.GetRelated("Win32_LogicalDisk"))
+                        {
+                            string name = logical["Name"]?.ToString();
+                            if (!string.IsNullOrEmpty(name))
+                                result.Add(name[0]); // C, D, etc
+                        }
                     }
                 }
-
-                // Limit to the approximate physical drive count
-                // (This is a rough heuristic without WMI)
-                if (letters.Count > physicalIndex + 1)
-                {
-                    return letters.GetRange(physicalIndex, 1);
-                }
-
-                return letters;
             }
-            catch
+            catch (Exception ex)
             {
-                return letters;
+                Debug.WriteLine($"WMI error: {ex.Message}");
             }
+
+            return result;
         }
 
         // ── Calculate total system storage ──────────────────

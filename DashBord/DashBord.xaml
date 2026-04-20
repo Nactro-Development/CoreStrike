@@ -105,7 +105,7 @@ RenderTransformOrigin="0.5,0.5">
                         <TextBlock Text="{x:Bind CpuDisplayText, Mode=OneWay}" Foreground="#94A3B8"/>
                             <StackPanel  Spacing="20" Orientation="Horizontal" >
                                 <TextBlock Foreground="#94A3B8" Text="{x:Bind CpuCoreSvi2Voltage, Mode=OneWay}" />
-                                <TextBlock Foreground="#94A3B8" Text="{x:Bind CpuSocSvi2Voltage,  Mode=OneWay}" />
+                                <TextBlock Foreground="#94A3B8" Text="{x:Bind CpuBusSpeed,  Mode=OneWay}" />
                             </StackPanel>
                             <TextBlock Foreground="{ThemeResource SystemAccentColor}" FontWeight="Bold" Text="{x:Bind CpuPackagePower,    Mode=OneWay}" />
                           
@@ -310,7 +310,7 @@ RenderTransformOrigin="0.5,0.5">
 
 
                         <StackPanel Grid.Column="2" >
-                            <TextBlock Text="{x:Bind GpuClock, Mode=OneWay}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="{x:Bind GpuClock, Mode=OneWay}" FontSize="28" FontWeight="Bold" />
                             <TextBlock Text="{x:Bind GPUCoreUsageText, Mode=OneWay}" Foreground="#94A3B8"/>
                             <TextBlock Text="{x:Bind GpuMemoryUsed, Mode=OneWay}" Foreground="#94A3B8"/>
                            
@@ -363,7 +363,7 @@ Margin="0,12,0,12">
 
                         </Border>
 
-                        <TextBlock Text="{x:Bind MemoryTotal, Mode=OneWay}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="{x:Bind MemoryTotal, Mode=OneWay}" FontSize="28" FontWeight="Bold" />
 
                         <TextBlock Text="{x:Bind MemoryUsed, Mode=OneWay}" Foreground="#94A3B8"/>
 
@@ -404,7 +404,7 @@ Margin="0,12,0,12">
 
 
 
-                        <TextBlock Text="{x:Bind VirtualTotal, Mode=OneWay}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="{x:Bind VirtualTotal, Mode=OneWay}" FontSize="28" FontWeight="Bold" />
 
                         <TextBlock Text="{x:Bind VirtualUsed, Mode=OneWay}" Foreground="#94A3B8"/>
 
@@ -459,7 +459,7 @@ Margin="0,12,0,12">
                        TextWrapping="Wrap"/>
                         <Border Background="{ThemeResource SystemAccentColor}"
                     CornerRadius="4" Padding="6,2">
-                            <TextBlock Text="{x:Bind DriveType, Mode=OneWay}"
+                            <TextBlock VerticalAlignment="Center" Text="{x:Bind DriveType, Mode=OneWay}"
                            FontSize="11" FontWeight="Bold" Foreground="White"/>
                         </Border>
                     </StackPanel>
@@ -480,7 +480,7 @@ Margin="0,12,0,12">
                         <!-- Total capacity -->
                         <StackPanel Grid.Row="0" Grid.Column="0">
                             <TextBlock Text="Total Capacity" Foreground="#94A3B8" FontSize="11"/>
-                            <TextBlock Text="{x:Bind DriveUsedSpace, Mode=OneWay}"
+                            <TextBlock Text="{x:Bind DriveTotalSpace, Mode=OneWay}"
                            FontSize="24" FontWeight="Bold"/>
                         </StackPanel>
 
@@ -494,7 +494,7 @@ Margin="0,12,0,12">
 
                         <!-- Used / Free -->
                         <StackPanel Grid.Row="1" Grid.Column="0">
-                            <TextBlock Text="{x:Bind DriveUsedSpace, Mode=OneWay}" Foreground="White"/>
+                            <TextBlock Text="{x:Bind DriveUsedSpace, Mode=OneWay}" />
                             <TextBlock Text="{x:Bind DriveFreeSpace, Mode=OneWay}" Foreground="#94A3B8"/>
                         </StackPanel>
 
@@ -508,8 +508,8 @@ Margin="0,12,0,12">
 
                         <!-- Read / Write -->
                         <StackPanel Grid.Row="2" Grid.Column="0">
-                            <TextBlock Text="{x:Bind DriveReadRate, Mode=OneWay}" Foreground="White"/>
-                            <TextBlock Text="{x:Bind DriveWriteRate, Mode=OneWay}" Foreground="White"/>
+                            <TextBlock Text="{x:Bind DriveReadRate, Mode=OneWay}" />
+                            <TextBlock Text="{x:Bind DriveWriteRate, Mode=OneWay}" />
                         </StackPanel>
 
                         <!-- Life + Power-On -->
@@ -533,8 +533,8 @@ Margin="0,12,0,12">
                 <Border Grid.Row="0" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush }" Padding="16" >
                     <StackPanel>
                         <TextBlock Text="Network" Foreground="Gray"/>
-                        <TextBlock Text="Download: 842 Mbps" Foreground="White"/>
-                        <TextBlock Text="Upload: 120 Mbps" Foreground="White"/>
+                        <TextBlock Text="Download: 842 Mbps"/>
+                        <TextBlock Text="Upload: 120 Mbps" />
                         <TextBlock Text="Latency: 9 ms" Foreground="#94A3B8"/>
                     </StackPanel>
                 </Border>
@@ -543,9 +543,9 @@ Margin="0,12,0,12">
                 <Border Grid.Row="1" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush }" Padding="16">
                     <StackPanel>
                         <TextBlock Text="Processes" Foreground="Gray"/>
-                        <TextBlock Text="System_Kernel.bin - 1.2%" Foreground="White"/>
-                        <TextBlock Text="Kinetic_Engine.exe - 8.4%" Foreground="White"/>
-                        <TextBlock Text="Graphics_Renderer - 14.2%" Foreground="White"/>
+                        <TextBlock Text="System_Kernel.bin - 1.2%" />
+                        <TextBlock Text="Kinetic_Engine.exe - 8.4%" />
+                        <TextBlock Text="Graphics_Renderer - 14.2%" />
                     </StackPanel>
                 </Border>
 

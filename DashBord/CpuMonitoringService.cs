@@ -32,6 +32,7 @@ namespace CoreStrike.DashBord
         private string _cpuPackagePower = "N/A";
         private string _cpuCoreSvi2Voltage = "N/A";
         private string _cpuSocSvi2Voltage = "N/A";
+        private string _cpuBusSpeed = "N/A";
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -99,6 +100,13 @@ namespace CoreStrike.DashBord
         {
             get => _cpuSocSvi2Voltage;
             private set { if (_cpuSocSvi2Voltage != value) { _cpuSocSvi2Voltage = value; OnPropertyChanged(); } }
+        }
+
+        /// <summary>CPU Bus Speed — e.g. "100.0 MHz"</summary>
+        public string CpuBusSpeed
+        {
+            get => _cpuBusSpeed;
+            private set { if (_cpuBusSpeed != value) { _cpuBusSpeed = value; OnPropertyChanged(); } }
         }
 
         // ── Constructor ───────────────────────────────────────────────────
@@ -213,8 +221,8 @@ namespace CoreStrike.DashBord
                             // ── CPU Load ───────────────────────────────────────
                             if (sensor.SensorType == SensorType.Load)
                             {
-                                if (sensor.Name.Contains("Total") ||
-                                    sensor.Name.Contains("Package") ||
+                                if (sensor.Name.Contains("Total") || // Intel
+                                    sensor.Name.Contains("Package") || // AMD might label total load as "CPU Package Load" or similar
                                     cpuUsage == 0)
                                 {
                                     cpuUsage = sensor.Value ?? 0;
@@ -225,43 +233,56 @@ namespace CoreStrike.DashBord
                             if (sensor.SensorType == SensorType.Clock && sensor.Value.HasValue)
                             {
                                 string name = sensor.Name.ToLower();
-                                if (name.Contains("bus")) continue;
-                                if (name.Contains("core"))
+                               
+                                if (name.Contains("core")) // Only consider core clocks, ignore bus speed or other clocks
                                     coreClocks.Add(sensor.Value.Value);
                             }
 
-                            // ── CPU Temperature ────────────────────────────────
+
+
                             if (sensor.SensorType == SensorType.Temperature)
                             {
+                                // ★★★ DEBUG OUTPUT ★★★
+                                Console.WriteLine($"[DEBUG] Sensor: {sensor.Name} | Value: {sensor.Value} | Type: {sensor.SensorType}");
+
                                 bool isPackage =
                                     sensor.Name.Contains("Package", StringComparison.OrdinalIgnoreCase) ||
                                     sensor.Name.Contains("Tdie", StringComparison.OrdinalIgnoreCase) ||
                                     sensor.Name.Contains("Tccd", StringComparison.OrdinalIgnoreCase) ||
+                                    sensor.Name.Contains("Core", StringComparison.OrdinalIgnoreCase) ||
                                     sensor.Name.Contains("CCD", StringComparison.OrdinalIgnoreCase);
+
+                                Console.WriteLine($"[DEBUG] isPackage = {isPackage}");
 
                                 if (isPackage)
                                 {
                                     temperature = sensor.Value ?? 0;
                                     hasPackageTemp = true;
+                                    Console.WriteLine($"[DEBUG] Package Temp Set: {temperature}");
                                 }
                                 else if (!hasPackageTemp)
                                 {
                                     temperature = Math.Max(temperature, sensor.Value ?? 0);
+                                    Console.WriteLine($"[DEBUG] Fallback Temp Set: {temperature}");
                                 }
                             }
 
+
                             // ── Package Power ──────────────────────────────────
                             if (sensor.SensorType == SensorType.Power &&
-                                sensor.Name.Equals("CPU Package", StringComparison.OrdinalIgnoreCase) &&
+                                (sensor.Name.Equals("Package", StringComparison.OrdinalIgnoreCase) || // Some AMD sensors might just be "CPU Power" or similar
+                                 sensor.Name.Equals("CPU Package", StringComparison.OrdinalIgnoreCase)) && // Intel
                                 sensor.Value.HasValue)
                             {
                                 CpuPackagePower = $"{sensor.Value.Value:F1} W";
                             }
 
 
-                            // ── Core SVI2 TFN Voltage ──────────────────────────
+
+                            // ── Core voltage ──────────────────────────
                             if (sensor.SensorType == SensorType.Voltage &&
-                                sensor.Name.Contains("CPU Core", StringComparison.OrdinalIgnoreCase) &&
+                                (sensor.Name.Equals("CPU Core", StringComparison.OrdinalIgnoreCase) || // Intel
+                                 sensor.Name.Equals("Core (SVI2 TFN)", StringComparison.OrdinalIgnoreCase)) && // AMD
                                 sensor.Value.HasValue)
                             {
                                 CpuCoreSvi2Voltage = $"{sensor.Value.Value:F3} V";
@@ -269,13 +290,12 @@ namespace CoreStrike.DashBord
 
 
 
-                            // ── SoC SVI2 TFN Voltage ───────────────────────────
+                            // ── Bus speed ───────────────────────
                             if (sensor.SensorType == SensorType.Clock &&
-                                sensor.Name.Contains("Bus Speed", StringComparison.OrdinalIgnoreCase) &&
-                               
+                                (sensor.Name.Equals("Bus Speed", StringComparison.OrdinalIgnoreCase)) &&
                                 sensor.Value.HasValue)
                             {
-                                CpuSocSvi2Voltage = $"{sensor.Value.Value:F3} V";
+                                CpuBusSpeed = $"{sensor.Value.Value:F0} MHz";
                             }
 
 

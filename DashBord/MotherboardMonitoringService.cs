@@ -163,7 +163,7 @@ namespace CoreStrike.DashBord
                                 {
                                     switch (sensor.Name)
                                     {
-                                        case "Fan #1":
+                                        case "CPU Fan":
                                             Fan1Rpm = $"{sensor.Value.Value:F0} RPM";
 
                                             break;

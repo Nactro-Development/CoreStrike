@@ -64,7 +64,7 @@ namespace CoreStrike.DashBord
         public string CpuCoresAvg => _cpuService?.CpuCoresAvg ?? "N/A";
         public string CpuPackagePower => _cpuService?.CpuPackagePower ?? "N/A";
         public string CpuCoreSvi2Voltage => _cpuService?.CpuCoreSvi2Voltage ?? "N/A";
-        public string CpuSocSvi2Voltage => _cpuService?.CpuSocSvi2Voltage ?? "N/A";
+        public string CpuBusSpeed => _cpuService?.CpuBusSpeed ?? "N/A";
 
         // ── GPU Properties ────────────────────────────────────
         public string GpuName => _gpuService?.GpuName ?? string.Empty;
