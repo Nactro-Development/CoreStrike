@@ -13,8 +13,10 @@ using Microsoft.UI.Xaml.Media;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using ObservableCollections = System.Collections.ObjectModel;
 
 namespace CoreStrike.DashBord
 {
@@ -24,6 +26,8 @@ namespace CoreStrike.DashBord
         private GpuMonitoringService? _gpuService;
         private MotherboardMonitoringService? _mbService;
         private MemoryMonitoringService? _memService;
+        private NetworkMonitoringService? _networkService;
+        private ProcessMonitoringService? _processService;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         private StorageMonitoringService? _storageService;
@@ -76,7 +80,7 @@ namespace CoreStrike.DashBord
         public string Gpu3DVDDisplayText => _gpuService?.Gpu3DVDDisplayText ?? string.Empty;
         public string GpuMemoryUsed => _gpuService?.GpuMemoryUsed ?? "0 MB";
         public string GpuMemoryTotal => _gpuService?.GpuMemoryTotal ?? "0 MB";
-        public string GPUfanText => _gpuService?.GPUfanText ?? "N/A";
+        public string FanDisplayText => _gpuService?.GPUfanText ?? "N/A";
         public string GPUPowerText => _gpuService?.GPUPowerText ?? "N/A";
         public string GPUCoreUsageText => _gpuService?.GPUCoreUsageText ?? "N/A";
 
@@ -127,8 +131,7 @@ namespace CoreStrike.DashBord
         public string DriveThroughput => _storageService?.DriveThroughput ?? "N/A";
         public string DriveLifeText => _storageService?.DriveLifeText ?? "N/A";
         public string PowerOnHours => _storageService?.PowerOnHours ?? "N/A";
-
-
+        public float DriveUsagePercent => _storageService?.DriveUsagePercent ?? 0f;
 
 
         // ── Motherboard Properties ────────────────────────────
@@ -147,6 +150,32 @@ namespace CoreStrike.DashBord
         public float MemoryUsagePercent => _memService?.MemoryUsagePercent ?? 0f;
         public float MaxMemoryUsage => _memService?.MaxMemoryUsage ?? 0f;
 
+        // ── Network Properties ─────────────────────────────────
+        public ObservableCollections.ObservableCollection<string> AvailableNetworkAdapters => _networkService?.AvailableAdapters ?? new();
+
+        public int SelectedNetworkAdapterIndex
+        {
+            get => _networkService?.SelectedAdapterIndex ?? 0;
+            set
+            {
+                if (_networkService != null && _networkService.SelectedAdapterIndex != value)
+                {
+                    _networkService.SelectedAdapterIndex = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string NetworkAdapterName => _networkService?.AdapterName ?? "Not Connected";
+        public string NetworkDownloadSpeed => _networkService?.DownloadSpeed ?? "↓ 0.0 Mbps";
+        public string NetworkUploadSpeed => _networkService?.UploadSpeed ?? "↑ 0.0 Mbps";
+        public string NetworkLatency => _networkService?.Latency ?? "Latency: 0 ms";
+        public string NetworkStatus => _networkService?.NetworkStatusText ?? "No Network";
+
+        // ── Process Properties ─────────────────────────────────
+        public ObservableCollections.ObservableCollection<ProcessInfo> TopProcesses => _processService?.TopProcesses ?? new();
+        public float ProcessCpuUsageTotal => _processService?.TotalCpuUsage ?? 0f;
+
         // ── Constructor ───────────────────────────────────────
         public DashBord()
         {
@@ -158,8 +187,16 @@ namespace CoreStrike.DashBord
             // ✅ FIX: _memService ව InitializeChart() කලින් new කරන්න
             _memService = new MemoryMonitoringService();
             _storageService = new StorageMonitoringService();
-
-            // ✅ InitializeChart() call කරන්නේ සියලු services ready වෙලා
+            _networkService = new NetworkMonitoringService();
+            _processService = new ProcessMonitoringService(); // Initialize ProcessMonitoringService
+            
+            // Set up UI dispatcher for process monitoring service
+            _processService.SetUIDispatcher(action =>
+            {
+                this.DispatcherQueue?.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.Normal, () => action());
+                return true;
+            });
+            // ✅ InitializeChart() call කරනහැටි සියලු services ready වෙලා
             InitializeChart();
 
             _storageService.PropertyChanged += (s, e) =>
@@ -184,6 +221,26 @@ namespace CoreStrike.DashBord
                     OnPropertyChanged(nameof(CpufanText));
             };
             _memService.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            _networkService.PropertyChanged += (s, e) =>
+            {
+                // Propagate all network service property changes to the UI
+                OnPropertyChanged(e.PropertyName);
+                
+                // Also update the proxy properties when relevant network properties change
+                if (e.PropertyName == nameof(NetworkMonitoringService.DownloadSpeed))
+                    OnPropertyChanged(nameof(NetworkDownloadSpeed));
+                else if (e.PropertyName == nameof(NetworkMonitoringService.UploadSpeed))
+                    OnPropertyChanged(nameof(NetworkUploadSpeed));
+                else if (e.PropertyName == nameof(NetworkMonitoringService.AdapterName))
+                    OnPropertyChanged(nameof(NetworkAdapterName));
+                else if (e.PropertyName == nameof(NetworkMonitoringService.Latency))
+                    OnPropertyChanged(nameof(NetworkLatency));
+                else if (e.PropertyName == nameof(NetworkMonitoringService.NetworkStatusText))
+                    OnPropertyChanged(nameof(NetworkStatus));
+                else if (e.PropertyName == nameof(NetworkMonitoringService.AvailableAdapters))
+                    OnPropertyChanged(nameof(AvailableNetworkAdapters));
+            };
+            _processService.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
 
             // Start all services
             _cpuService.StartMonitoring();
@@ -191,6 +248,8 @@ namespace CoreStrike.DashBord
             _mbService.StartMonitoring();
             _memService.StartMonitoring();
             _storageService.StartMonitoring();
+            _networkService.StartMonitoring();
+            _processService.StartMonitoring(); // Start monitoring processes
 
 
             // Stress test
@@ -209,6 +268,8 @@ namespace CoreStrike.DashBord
                 _mbService?.Cleanup();
                 _memService?.Cleanup();
                 _storageService?.Cleanup();
+                _networkService?.Cleanup();
+                _processService?.Cleanup();
                 _stressTest.Stop();
             };
 
@@ -315,7 +376,7 @@ namespace CoreStrike.DashBord
                 }
             };
 
-            // ✅ FIX: _memService දැන් null නෑ — InitializeChart() කලින් new කළා
+            // ✅ FIX: _memService දැන් null නෑ — InitializeChart() කලින් new කලා
             RAMSeries = new[]
             {
                 new LineSeries<ObservablePoint>
@@ -328,7 +389,7 @@ namespace CoreStrike.DashBord
                 }
             };
 
-            // ✅ FIX: _memService දැන් null නෑ — InitializeChart() කලින් new කළා
+            // ✅ FIX: _memService දැන් null නෑ — InitializeChart() කලින් new කලා
             VRAMSeries = new[]
             {
                 new LineSeries<ObservablePoint>
@@ -347,7 +408,7 @@ namespace CoreStrike.DashBord
             _gpuService?.Set3DCopyXAsis(gpu3DCopyXAxis);
             _gpuService?.Set3DVEXAsis(gpu3DVEXAxis);
             _gpuService?.Set3DVDXAsis(gpu3DVDXAxis);
-            // ✅ FIX: RAM axis wiring — කලින් missing වෙලා තිබුණේ
+            // ✅ FIX: RAM axis wiring — කලන්
             _memService?.SetXAxis(ramXAxis);
             _memService?.SetVXAxis(VramXAxis);
         }

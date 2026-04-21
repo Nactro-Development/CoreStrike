@@ -294,7 +294,7 @@ RenderTransformOrigin="0.5,0.5">
                                 </Viewbox>
 
 
-                                <TextBlock Text="{x:Bind GPUfanText, Mode=OneWay}" FontSize="15" Foreground="#94A3B8"/>
+                                <TextBlock Text="{x:Bind FanDisplayText, Mode=OneWay}" FontSize="15" Foreground="#94A3B8"/>
                                 <TextBlock Text="{x:Bind GpuTemperature, Mode=OneWay}" FontWeight="Bold" FontSize="15" Foreground="{ThemeResource SystemAccentColor}"/>
                             </StackPanel>
 
@@ -453,15 +453,59 @@ Margin="0,12,0,12">
                   Margin="0,4,0,8"/>
 
                     <!-- Drive name + type badge -->
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="{x:Bind DriveName, Mode=OneWay}"
-                       FontSize="18" FontWeight="SemiBold"
-                       TextWrapping="Wrap"/>
-                        <Border Background="{ThemeResource SystemAccentColor}"
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="8">
+
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="8" >
+                            <FontIcon VerticalAlignment="Center" Foreground="Gray" Glyph="&#xEDA2;" FontSize="35"/>
+                            <TextBlock VerticalAlignment="Center" Text="{x:Bind DriveName, Mode=OneWay}"
+FontSize="18" FontWeight="SemiBold"
+TextWrapping="Wrap"/>
+                        </StackPanel>
+                       
+                        
+                        
+                        <Border Height="20" Background="{ThemeResource SystemAccentColor}"
                     CornerRadius="4" Padding="6,2">
                             <TextBlock VerticalAlignment="Center" Text="{x:Bind DriveType, Mode=OneWay}"
                            FontSize="11" FontWeight="Bold" Foreground="White"/>
                         </Border>
+                    </StackPanel>
+
+                    <!-- Windows-style Progress Bar -->
+                    <StackPanel Spacing="8" Margin="0,12,0,0">
+                        <ProgressBar Value="{x:Bind DriveUsagePercent, Mode=OneWay}"
+                                     Maximum="100"
+                                     Height="20"
+                                     CornerRadius="4"
+                                     Foreground="{ThemeResource SystemAccentColor}">
+
+                            <ProgressBar.Resources>
+                                <Style TargetType="ProgressBar">
+                                    <Setter Property="MinHeight" Value="15"/>
+                                </Style>
+                            </ProgressBar.Resources>
+
+                        </ProgressBar>
+                        
+                        
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="{x:Bind DriveUsedSpace, Mode=OneWay}"
+                                       FontSize="12"
+                                       Foreground="#94A3B8"
+                                       TextAlignment="Left"/>
+                          
+                            <TextBlock Grid.Column="2"
+                                       Text="{x:Bind DriveFreeSpace, Mode=OneWay}"
+                                       FontSize="12"
+                                       Foreground="#94A3B8"
+                                       TextAlignment="Right"/>
+                        </Grid>
                     </StackPanel>
 
                     <!-- ── Two-column stats grid ── -->
@@ -532,20 +576,94 @@ Margin="0,12,0,12">
                 <!-- NETWORK -->
                 <Border Grid.Row="0" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush }" Padding="16" >
                     <StackPanel>
-                        <TextBlock Text="Network" Foreground="Gray"/>
-                        <TextBlock Text="Download: 842 Mbps"/>
-                        <TextBlock Text="Upload: 120 Mbps" />
-                        <TextBlock Text="Latency: 9 ms" Foreground="#94A3B8"/>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Foreground="Gray" Glyph="&#xE774;" FontSize="16"/>
+                            <TextBlock Foreground="Gray" Text="NETWORK" FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <ComboBox 
+                            x:Name="NetworkAdapterComboBox"
+                            ItemsSource="{x:Bind AvailableNetworkAdapters, Mode=OneWay}"
+                            SelectedIndex="{x:Bind SelectedNetworkAdapterIndex, Mode=TwoWay}"
+                            PlaceholderText="Select Network Adapter..."
+                            Margin="0,12,0,12"/>
+
+                        <TextBlock Text="{x:Bind NetworkAdapterName, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" Margin="0,8,0,4"/>
+                        <TextBlock Text="{x:Bind NetworkStatus, Mode=OneWay}" Foreground="#94A3B8" FontSize="12"/>
+                        
+                        <Grid ColumnSpacing="8" RowSpacing="8" Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Column="0" Grid.Row="0">
+                                <TextBlock Text="Download" Foreground="#94A3B8" FontSize="11"/>
+                                <TextBlock Text="{x:Bind NetworkDownloadSpeed, Mode=OneWay}" FontSize="18" FontWeight="Bold"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Grid.Row="0">
+                                <TextBlock Text="Upload" Foreground="#94A3B8" FontSize="11"/>
+                                <TextBlock Text="{x:Bind NetworkUploadSpeed, Mode=OneWay}" FontSize="18" FontWeight="Bold"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{x:Bind NetworkLatency, Mode=OneWay}" Foreground="#94A3B8" FontSize="11"/>
+                        </Grid>
                     </StackPanel>
                 </Border>
 
                 <!-- PROCESSES -->
                 <Border Grid.Row="1" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush }" Padding="16">
                     <StackPanel>
-                        <TextBlock Text="Processes" Foreground="Gray"/>
-                        <TextBlock Text="System_Kernel.bin - 1.2%" />
-                        <TextBlock Text="Kinetic_Engine.exe - 8.4%" />
-                        <TextBlock Text="Graphics_Renderer - 14.2%" />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Foreground="Gray" Glyph="&#xEEA0;" FontSize="16"/>
+                            <TextBlock Foreground="Gray" Text="TOP PROCESSES" FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <ListView ItemsSource="{x:Bind TopProcesses, Mode=OneWay}"
+                                  SelectionMode="None"
+                                  Margin="0,12,0,0"
+                                  MaxHeight="200">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="local:ProcessInfo">
+                                    <Grid ColumnSpacing="8" Padding="0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="{x:Bind DisplayName, Mode=OneWay}" 
+                                                       FontSize="13" 
+                                                       FontWeight="SemiBold"
+                                                       Foreground="White"/>
+                                            <TextBlock Text="{x:Bind ProcessId, Mode=OneWay}" 
+                                                       FontSize="11" 
+                                                       Foreground="#94A3B8"/>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{x:Bind CpuUsageText, Mode=OneWay}" 
+                                                   FontSize="12" 
+                                                   Foreground="{ThemeResource SystemAccentColor}"
+                                                   FontWeight="SemiBold"
+                                                   TextAlignment="Right"/>
+
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{x:Bind MemoryUsageText, Mode=OneWay}" 
+                                                   FontSize="12" 
+                                                   Foreground="#94A3B8"
+                                                   TextAlignment="Right"
+                                                   Margin="12,0,0,0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </StackPanel>
                 </Border>
 

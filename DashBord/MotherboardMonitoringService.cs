@@ -1,5 +1,6 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -13,6 +14,14 @@ namespace CoreStrike.DashBord
     {
         private Computer? _computer;
         private CancellationTokenSource? _cancellationTokenSource;
+
+        // ── CPU Fan Auto-Detection State ───────────────────────────────────
+        private string? _cpuFanSensorName = null;
+        private bool _cpuFanResolved = false;
+        private readonly Dictionary<string, float> _fanReadings = new();
+
+        private static readonly string[] CpuFanCandidates =
+            { "CPU Fan", "Fan #1", "Fan #2", "Fan #3", "Fan #4" };
 
         // ── Fan RPM Properties ─────────────────────────────────────────────
         private string _fan1Rpm = "N/A";
@@ -132,6 +141,22 @@ namespace CoreStrike.DashBord
             }
         }
 
+        // ── CPU Fan Auto-Detection ────────────────────────────────────────
+        private static string? ResolveCpuFanName(Dictionary<string, float> readings)
+        {
+            // Priority 1: first candidate name that has an active RPM
+            foreach (var name in CpuFanCandidates)
+                if (readings.TryGetValue(name, out var rpm) && rpm > 0)
+                    return name;
+
+            // Priority 2: any active fan as last-resort fallback
+            return readings
+                .Where(kv => kv.Value > 0)
+                .OrderBy(kv => kv.Key)
+                .Select(kv => kv.Key)
+                .FirstOrDefault();
+        }
+
         // ── Monitor Loop ──────────────────────────────────────────────────
         private async Task MonitorMotherboardAsync(CancellationToken cancellationToken)
         {
@@ -156,21 +181,13 @@ namespace CoreStrike.DashBord
                     {
                         foreach (var subHw in mbHardware.SubHardware)
                         {
+                            // ── Pass 1: collect all sensor readings ───────
                             foreach (var sensor in subHw.Sensors)
                             {
-                                // ── Fans ──────────────────────────────────
+                                // ── Fan RPM Collection ────────────────────
                                 if (sensor.SensorType == SensorType.Fan && sensor.Value.HasValue)
                                 {
-                                    switch (sensor.Name)
-                                    {
-                                        case "CPU Fan":
-                                            Fan1Rpm = $"{sensor.Value.Value:F0} RPM";
-
-                                            break;
-                                        case "Fan #2":
-                                            Fan2Rpm = $"{sensor.Value.Value:F0} RPM";
-                                            break;
-                                    }
+                                    _fanReadings[sensor.Name] = sensor.Value.Value;
                                 }
 
                                 // ── Fan Control (%) ───────────────────────
@@ -187,7 +204,7 @@ namespace CoreStrike.DashBord
                                     {
                                         case "Temperature #1":
                                             Temp1 = $"{sensor.Value.Value:F0}°C";
-                                            Debug.WriteLine($"Total Sensors: {sensor.Value.Value:F0}C");
+                                            Debug.WriteLine($"[Motherboard] Temp1: {sensor.Value.Value:F0}°C");
                                             break;
                                         case "Temperature #2":
                                             Temp2 = $"{sensor.Value.Value:F0}°C";
@@ -210,6 +227,41 @@ namespace CoreStrike.DashBord
                                     if (sensor.Name == "Voltage #1")
                                         CpuVcore = $"{sensor.Value.Value:F3} V";
                                 }
+                            }
+
+                            // ── Pass 2: resolve CPU fan from collected readings ──
+                            if (_fanReadings.Count > 0)
+                            {
+                                // Re-detect if not yet resolved, or if the
+                                // previously resolved fan has dropped to 0 RPM
+                                bool resolvedFanStalled = _cpuFanSensorName != null
+                                    && _fanReadings.TryGetValue(_cpuFanSensorName, out var currentRpm)
+                                    && currentRpm == 0;
+
+                                if (!_cpuFanResolved || resolvedFanStalled)
+                                {
+                                    _cpuFanSensorName = ResolveCpuFanName(_fanReadings);
+                                    _cpuFanResolved = _cpuFanSensorName != null;
+                                    Debug.WriteLine($"[Motherboard] CPU fan resolved to: {_cpuFanSensorName ?? "none"}");
+                                }
+
+                                // ── Apply CPU fan RPM → Fan1Rpm ───────────
+                                Fan1Rpm = _cpuFanSensorName != null
+                                    && _fanReadings.TryGetValue(_cpuFanSensorName, out var cpuRpm)
+                                    ? $"{cpuRpm:F0} RPM"
+                                    : "N/A";
+
+                                // ── Fan2Rpm = first other active fan ──────
+                                var otherFan = _fanReadings
+                                    .Where(kv => kv.Key != _cpuFanSensorName && kv.Value > 0)
+                                    .OrderBy(kv => kv.Key)
+                                    .FirstOrDefault();
+
+                                Fan2Rpm = otherFan.Key != null
+                                    ? $"{otherFan.Value:F0} RPM"
+                                    : "N/A";
+
+                                _fanReadings.Clear();
                             }
                         }
                     }

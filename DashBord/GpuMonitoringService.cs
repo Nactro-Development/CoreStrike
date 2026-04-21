@@ -42,10 +42,16 @@ namespace CoreStrike.DashBord
         private Axis? _x3DVEAxis;
         private Axis? _x3DVDAxis;
 
-
         private float _maxGpuTemperature = 0;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        // ── Small helper record for fan detection ──────────────────────────
+        private record FanSensor(string Name, float Rpm);
+
+        // ══════════════════════════════════════════════════════════════════
+        // Properties
+        // ══════════════════════════════════════════════════════════════════
 
         public float MaxGpuTemperature
         {
@@ -94,29 +100,10 @@ namespace CoreStrike.DashBord
             _gpu3DVDUsageData.Clear();
         }
 
-        public void SetXAxis(Axis xAxis)
-        {
-            _xAxis = xAxis;
-        }
-
-
-        public void Set3DCopyXAsis(Axis x3DCopyAxis)
-        {
-            _x3DCopyAxis = x3DCopyAxis;
-        }
-
-
-        public void Set3DVEXAsis(Axis x3DVEAxis)
-        {
-            _x3DVEAxis = x3DVEAxis;
-        }
-
-        public void Set3DVDXAsis(Axis x3DVDAxis)
-        {
-            _x3DVDAxis = x3DVDAxis;
-        }
-
-
+        public void SetXAxis(Axis xAxis) => _xAxis = xAxis;
+        public void Set3DCopyXAsis(Axis x3DCopyAxis) => _x3DCopyAxis = x3DCopyAxis;
+        public void Set3DVEXAsis(Axis x3DVEAxis) => _x3DVEAxis = x3DVEAxis;
+        public void Set3DVDXAsis(Axis x3DVDAxis) => _x3DVDAxis = x3DVDAxis;
 
         public string GpuName
         {
@@ -135,17 +122,19 @@ namespace CoreStrike.DashBord
             get => _gpuTemperature;
             set { if (_gpuTemperature != value) { _gpuTemperature = value; OnPropertyChanged(); } }
         }
+
         public string GPUfanText
         {
             get => _gpufan;
             set { if (_gpufan != value) { _gpufan = value; OnPropertyChanged(); } }
         }
-        
+
         public string GPUPowerText
         {
             get => _gpupower;
             set { if (_gpupower != value) { _gpupower = value; OnPropertyChanged(); } }
         }
+
         public string GPUCoreUsageText
         {
             get => _gpucoreusage;
@@ -157,20 +146,22 @@ namespace CoreStrike.DashBord
             get => _gpuDisplayText;
             set { if (_gpuDisplayText != value) { _gpuDisplayText = value; OnPropertyChanged(); } }
         }
+
         public string Gpu3DCopyDisplayText
         {
             get => _gpu3DCopyDisplayText;
             set { if (_gpu3DCopyDisplayText != value) { _gpu3DCopyDisplayText = value; OnPropertyChanged(); } }
         }
+
         public string Gpu3DVEDisplayText
         {
             get => _gpu3DVEDisplayText;
             set { if (_gpu3DVEDisplayText != value) { _gpu3DVEDisplayText = value; OnPropertyChanged(); } }
         }
-        // ✅ CORRECT
+
         public string Gpu3DVDDisplayText
         {
-            get => _gpu3DVDDisplayText;  // <-- fix
+            get => _gpu3DVDDisplayText;
             set { if (_gpu3DVDDisplayText != value) { _gpu3DVDDisplayText = value; OnPropertyChanged(); } }
         }
 
@@ -186,26 +177,14 @@ namespace CoreStrike.DashBord
             set { if (_gpuMemoryTotal != value) { _gpuMemoryTotal = value; OnPropertyChanged(); } }
         }
 
-        public ObservableCollection<ObservablePoint> GpuUsageData
-        {
-            get => _gpuUsageData;
-        }
+        public ObservableCollection<ObservablePoint> GpuUsageData => _gpuUsageData;
+        public ObservableCollection<ObservablePoint> Gpu3DCopyUsageData => _gpu3DCopyUsageData;
+        public ObservableCollection<ObservablePoint> Gpu3DVEUsageData => _gpu3DVEUsageData;
+        public ObservableCollection<ObservablePoint> Gpu3DVEDUsageData => _gpu3DVDUsageData;
 
-        public ObservableCollection<ObservablePoint> Gpu3DCopyUsageData
-        {
-            get => _gpu3DCopyUsageData;
-        }
-
-
-        public ObservableCollection<ObservablePoint> Gpu3DVEUsageData
-        {
-            get => _gpu3DVEUsageData;
-        }
-
-        public ObservableCollection<ObservablePoint> Gpu3DVEDUsageData
-        {
-            get => _gpu3DVDUsageData;
-        }
+        // ══════════════════════════════════════════════════════════════════
+        // Constructor & Lifecycle
+        // ══════════════════════════════════════════════════════════════════
 
         public GpuMonitoringService()
         {
@@ -232,6 +211,10 @@ namespace CoreStrike.DashBord
             _computer?.Close();
         }
 
+        // ══════════════════════════════════════════════════════════════════
+        // Hardware Initialization
+        // ══════════════════════════════════════════════════════════════════
+
         private void InitializeHardwareMonitoring()
         {
             try
@@ -239,12 +222,11 @@ namespace CoreStrike.DashBord
                 _computer = new Computer
                 {
                     IsGpuEnabled = true,
-                    IsCpuEnabled = true, // CPU integrated graphics sometimes here
+                    IsCpuEnabled = true,
                 };
 
                 _computer.Open();
 
-                // ✅ DEBUG: ALL hardware print කරන්න
                 foreach (var hardware in _computer.Hardware)
                 {
                     Debug.WriteLine($"Found Hardware: [{hardware.HardwareType}] {hardware.Name}");
@@ -267,10 +249,13 @@ namespace CoreStrike.DashBord
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error: {ex.Message}");
+                Debug.WriteLine($"Error initializing hardware: {ex.Message}");
             }
         }
 
+        // ══════════════════════════════════════════════════════════════════
+        // Main Monitoring Loop
+        // ══════════════════════════════════════════════════════════════════
 
         private async Task MonitorGpuAsync(CancellationToken cancellationToken)
         {
@@ -278,28 +263,24 @@ namespace CoreStrike.DashBord
             int data3DCopyPointCount = 0;
             int data3DVEPointCount = 0;
             int data3DVDPointCount = 0;
-
-
             bool firstRun = true;
 
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
-                    // Update all hardware and subhardware
+                    // Update all hardware
                     if (_computer != null)
                     {
                         foreach (var hardware in _computer.Hardware)
                         {
                             hardware.Update();
                             foreach (var subHardware in hardware.SubHardware)
-                            {
                                 subHardware.Update();
-                            }
                         }
                     }
 
-                    var gpuHardware = _gpuHardwareList.Count > 0 && _selectedGpuIndex < _gpuHardwareList.Count
+                    var gpuHardware = (_gpuHardwareList.Count > 0 && _selectedGpuIndex < _gpuHardwareList.Count)
                         ? _gpuHardwareList[_selectedGpuIndex]
                         : null;
 
@@ -319,196 +300,133 @@ namespace CoreStrike.DashBord
                         float gpuPowerUsage = 0;
                         float gpucoreUsage = 0;
 
-                        // Debug on first run
+                        // Debug: print all sensors on first run
                         if (firstRun)
                         {
                             Debug.WriteLine($"=== GPU Hardware: {gpuHardware.Name} ===");
                             Debug.WriteLine($"Total Sensors: {gpuHardware.Sensors.Length}");
                             foreach (var s in gpuHardware.Sensors)
-                            {
                                 Debug.WriteLine($"  [{s.SensorType}] {s.Name} = {s.Value}");
-                            }
                             firstRun = false;
                         }
 
+                        // ── Read GPU sensors ───────────────────────────────────────
                         foreach (var sensor in gpuHardware.Sensors)
                         {
-                            // ── GPU Usage ──────────────────────────────────────
+                            string nameLower = sensor.Name.ToLower();
+
+                            // Load sensors
                             if (sensor.SensorType == SensorType.Load)
                             {
-                                string name = sensor.Name.ToLower();
-
-                                // PRIORITY 1: D3D 3D usage (most accurate for gaming/rendering)
-                                if (name == "d3d 3d")
-                                {
+                                if (nameLower == "d3d 3d")
                                     gpuUsage = sensor.Value ?? 0;
-                                }
-                             
-                                // PRIORITY 3: Any GPU load as last resort
-                                else if (gpuUsage == 0 && name.Contains("gpu"))
-                                {
+                                else if (gpuUsage == 0 && nameLower.Contains("gpu"))
                                     gpuUsage = sensor.Value ?? 0;
-                                }
-                            }
 
-                            // ── GPU Copy Usage ──────────────────────────────────────
-                            if (sensor.SensorType == SensorType.Load)
-                            {
-                                string name = sensor.Name.ToLower();
-
-                                // PRIORITY 1: D3D 3D usage (most accurate for gaming/rendering)
-                                if (name == "d3d copy")
-                                {
+                                if (nameLower == "d3d copy")
                                     gpuCopyUsage = sensor.Value ?? 0;
-                                }
-                             
-                            
-                            }
 
-                            // ── GPU Fan ──────────────────────────────────────
-                            if (sensor.SensorType == SensorType.Fan)
-                            {
-                                string name = sensor.Name.ToLower();
-
-                                // PRIORITY 1: D3D 3D usage (most accurate for gaming/rendering)
-                                if (name == "gpu fan")
-                                {
-                                    gpufan = sensor.Value ?? 0;
-                                }
-                             
-                            
-                            }
-
-
-
-
-                            // ── GPU Video Encode Usage ──────────────────────────────────────
-                            if (sensor.SensorType == SensorType.Load)
-                            {
-                                string name = sensor.Name.ToLower();
-
-                                // PRIORITY 1: D3D 3D usage (most accurate for gaming/rendering)
-                                if (name == "d3d video encoder")
-                                {
+                                if (nameLower == "d3d video encoder")
                                     gpuVEUsage = sensor.Value ?? 0;
-                                }
-                             
-                            
-                            }
 
-                            // ── GPU Video Decode Usage ──────────────────────────────────────
-                            if (sensor.SensorType == SensorType.Load)
-                            {
-                                string name = sensor.Name.ToLower();
-
-                                // PRIORITY 1: D3D 3D usage (most accurate for gaming/rendering)
-                                if (name == "d3d video decode")
-                                {
+                                if (nameLower == "d3d video decode")
                                     gpuVDUsage = sensor.Value ?? 0;
-                                }
-                             
-                            
-                            }
-                            // ── GPU Power ──────────────────────────────────────
-                            if (sensor.SensorType == SensorType.Load)
-                            {
-                                string name = sensor.Name.ToLower();
 
-                                // PRIORITY 1: D3D 3D usage (most accurate for gaming/rendering)
-                                if (name == "gpu power")
-                                {
+                                if (nameLower == "gpu power")
                                     gpuPowerUsage = sensor.Value ?? 0;
-                                }
-                             
-                            
-                            }
 
-
-                            // ── GPU Usage ──────────────────────────────────────
-                            if (sensor.SensorType == SensorType.Load)
-                            {
-                                string name = sensor.Name.ToLower();
-
-                                // PRIORITY 1: D3D 3D usage (most accurate for gaming/rendering)
-                                if (name == "gpu core")
-                                {
+                                if (nameLower == "gpu core")
                                     gpucoreUsage = sensor.Value ?? 0;
-                                }
-                             
-                            
                             }
 
+                            // Fan sensor (discrete GPU only — iGPU overridden below)
+                            if (sensor.SensorType == SensorType.Fan && nameLower == "gpu fan")
+                                gpufan = sensor.Value ?? 0;
 
-                            // ── GPU Clock ──────────────────────────────────────
+                            // Clock
                             if (sensor.SensorType == SensorType.Clock && sensor.Value.HasValue)
                             {
-                                string name = sensor.Name.ToLower();
-
-                                // PRIORITY 1: GPU Core clock (main shader clock)
-                                if (name == "gpu core")
-                                {
+                                if (nameLower == "gpu core")
                                     gpuClock = sensor.Value.Value;
-                                }
-                                // PRIORITY 2: Any GPU clock as fallback
-                                else if (gpuClock == 0 && name.Contains("gpu"))
-                                {
+                                else if (gpuClock == 0 && nameLower.Contains("gpu"))
                                     gpuClock = sensor.Value.Value;
-                                }
-                                // Skip memory clock
                             }
 
-
-
-                            // ── GPU Temperature ────────────────────────────────
-                            // ── GPU Temperature ────────────────────────────────
+                            // Temperature (discrete GPU only — iGPU overridden below)
                             if (sensor.SensorType == SensorType.Temperature)
                             {
-                                string name = sensor.Name.ToLower();
-
-                                // PRIORITY 1: GPU Core temp (main die temp)
-                                if (name == "gpu core")
-                                {
+                                if (nameLower == "gpu core")
                                     temperature = sensor.Value ?? 0;
-                                }
-                                // PRIORITY 2: Any other GPU temp as fallback (Hot Spot etc.)
-                                else if (temperature == 0 && name.Contains("gpu"))
-                                {
+                                else if (temperature == 0 && nameLower.Contains("gpu"))
                                     temperature = sensor.Value ?? 0;
-                                }
                             }
 
-
-                            // ── GPU Memory ────────────────────────────────────
+                            // Memory
                             if (sensor.SensorType == SensorType.SmallData)
                             {
-                                string name = sensor.Name.ToLower();
-
-                                if (name.Contains("used"))
-                                {
+                                if (nameLower.Contains("used"))
                                     memoryUsed = sensor.Value ?? 0;
-                                }
-                                else if (name.Contains("total"))
-                                {
+                                else if (nameLower.Contains("total"))
                                     memoryTotal = sensor.Value ?? 0;
+                            }
+                        }
+
+                        // ── Integrated GPU: override fan & temperature from CPU ──────
+                        if (IsIntegratedGpu(gpuHardware))
+                        {
+                            var cpuHardware = _computer?.Hardware
+                                .FirstOrDefault(h => h.HardwareType == HardwareType.Cpu);
+
+                            if (cpuHardware != null)
+                            {
+                                cpuHardware.Update();
+
+                                // Temperature: CPU Package > CPU Core #x > any CPU temp
+                                float cpuTemp = 0;
+                                foreach (var sensor in cpuHardware.Sensors)
+                                {
+                                    if (sensor.SensorType == SensorType.Temperature)
+                                    {
+                                        if (sensor.Name.Contains("Package", StringComparison.OrdinalIgnoreCase) ||
+                                    sensor.Name.Contains("Tdie", StringComparison.OrdinalIgnoreCase) ||
+                                    sensor.Name.Contains("Tccd", StringComparison.OrdinalIgnoreCase) ||
+                                    sensor.Name.Contains("Core", StringComparison.OrdinalIgnoreCase) ||
+                                    sensor.Name.Contains("CCD", StringComparison.OrdinalIgnoreCase) && 
+                                    
+                                    cpuTemp == 0)
+                                        {
+                                            cpuTemp = sensor.Value ?? 0;
+                                        }
+                                    }
+                                }
+
+                                if (cpuTemp > 0)
+                                {
+                                    temperature = cpuTemp;
+                                    Debug.WriteLine($"iGPU → CPU temp used: {cpuTemp}°C");
+                                }
+
+                                // Fan: smart auto-detection
+                                // Priority 1 → sensor named exactly "CPU Fan"
+                                // Priority 2 → first fan sensor with RPM > 0
+                                // Priority 3 → first fan sensor (even if 0)
+                                var fanResult = FindBestCpuFan(cpuHardware);
+                                if (fanResult != null)
+                                {
+                                    gpufan = fanResult.Rpm;
+                                    Debug.WriteLine($"iGPU → CPU fan used: [{fanResult.Name}] = {fanResult.Rpm} RPM");
                                 }
                             }
                         }
 
-                        GpuClock = gpuClock > 0
-                            ? $"{gpuClock:F0} MHz"
-                            : "N/A";
+                        // ── Format display strings ─────────────────────────────────
+                        GpuClock = gpuClock > 0 ? $"{gpuClock:F0} MHz" : "N/A";
+                        GpuTemperature = temperature >= 0 ? $"{temperature:F0}°C" : "N/A";
 
-                        GpuTemperature = temperature >= 0
-                            ? $"{temperature:F0}°C"
-                            : "N/A";
-
-                        // Format memory display
                         if (memoryUsed > 0 && memoryTotal > 0)
                         {
-                            float usedGb = memoryUsed / 1024;
-                            float totalGb = memoryTotal / 1024;
-                            GpuMemoryUsed = $"{usedGb:F1} GB";
-                            GpuMemoryTotal = $"{totalGb:F1} GB";
+                            GpuMemoryUsed = $"{memoryUsed / 1024:F1} GB";
+                            GpuMemoryTotal = $"{memoryTotal / 1024:F1} GB";
                         }
                         else
                         {
@@ -516,11 +434,8 @@ namespace CoreStrike.DashBord
                             GpuMemoryTotal = "N/A";
                         }
 
-                        // Track maximum temperature
                         if (temperature > MaxGpuTemperature)
-                        {
                             MaxGpuTemperature = temperature;
-                        }
 
                         GpuDisplayText = $"3D: {gpuUsage:F0}%";
                         Gpu3DCopyDisplayText = $"Copy: {gpuCopyUsage:F0}%";
@@ -530,112 +445,32 @@ namespace CoreStrike.DashBord
                         GPUPowerText = $"{gpuPowerUsage:F0} W";
                         GPUCoreUsageText = $"GPU Usage: {gpucoreUsage:F0}%";
 
-                        Debug.WriteLine($"Error monitoring GPU: {gpuCopyUsage}");
-                        Debug.WriteLine($"Error monitoring GPU: {gpuVEUsage}");
-                        Debug.WriteLine($"Error monitoring GPU: {gpufan}");
+                        // ── Update chart data (sliding window, 50 points) ──────────
 
-
-
-
-                        // Update chart data (keep last 50 points)
+                        // 3D Usage
                         _gpuUsageData.Add(new ObservablePoint(dataPointCount, gpuUsage));
-                        if (_gpuUsageData.Count > 50)
-                            _gpuUsageData.RemoveAt(0);
-
-                        // Sliding window X axis update
-                        if (_xAxis != null)
-                        {
-                            if (dataPointCount < 50)
-                            {
-                                _xAxis.MinLimit = 0;
-                                _xAxis.MaxLimit = 49;
-                            }
-                            else
-                            {
-                                _xAxis.MinLimit = dataPointCount - 49;
-                                _xAxis.MaxLimit = dataPointCount;
-                            }
-                        }
-
+                        if (_gpuUsageData.Count > 50) _gpuUsageData.RemoveAt(0);
+                        UpdateAxisWindow(_xAxis, dataPointCount);
                         dataPointCount++;
 
-
-
-                        // Update chart data (keep last 50 points)
+                        // Copy Usage
                         _gpu3DCopyUsageData.Add(new ObservablePoint(data3DCopyPointCount, gpuCopyUsage));
-                        if (_gpu3DCopyUsageData.Count > 50)
-                            _gpu3DCopyUsageData.RemoveAt(0);
-
-                        // Sliding window X axis update
-                        if (_x3DCopyAxis != null)
-                        {
-                            if (data3DCopyPointCount < 50)
-                            {
-                                _x3DCopyAxis.MinLimit = 0;
-                                _x3DCopyAxis.MaxLimit = 49;
-                            }
-                            else
-                            {
-                                _x3DCopyAxis.MinLimit = data3DCopyPointCount - 49;
-                                _x3DCopyAxis.MaxLimit = data3DCopyPointCount;
-                            }
-                        }
-
+                        if (_gpu3DCopyUsageData.Count > 50) _gpu3DCopyUsageData.RemoveAt(0);
+                        UpdateAxisWindow(_x3DCopyAxis, data3DCopyPointCount);
                         data3DCopyPointCount++;
 
-
-
-
-                        // Update chart data (keep last 50 points)
+                        // Video Encode Usage
                         _gpu3DVEUsageData.Add(new ObservablePoint(data3DVEPointCount, gpuVEUsage));
-                        if (_gpu3DVEUsageData.Count > 50)
-                            _gpu3DVEUsageData.RemoveAt(0);
-
-                        // Sliding window X axis update
-                        if (_x3DVEAxis != null)
-                        {
-                            if (data3DVEPointCount < 50)
-                            {
-                                _x3DVEAxis.MinLimit = 0;
-                                _x3DVEAxis.MaxLimit = 49;
-                            }
-                            else
-                            {
-                                _x3DVEAxis.MinLimit = data3DVEPointCount - 49;
-                                _x3DVEAxis.MaxLimit = data3DVEPointCount;
-                            }
-                        }
-
+                        if (_gpu3DVEUsageData.Count > 50) _gpu3DVEUsageData.RemoveAt(0);
+                        UpdateAxisWindow(_x3DVEAxis, data3DVEPointCount);
                         data3DVEPointCount++;
 
-
-
-
-                        // Update chart data (keep last 50 points)
+                        // Video Decode Usage
                         _gpu3DVDUsageData.Add(new ObservablePoint(data3DVDPointCount, gpuVDUsage));
-                        if (_gpu3DVDUsageData.Count > 50)
-                            _gpu3DVDUsageData.RemoveAt(0);
-
-                        // Sliding window X axis update
-                        if (_x3DVDAxis != null)
-                        {
-                            if (data3DVDPointCount < 50)
-                            {
-                                _x3DVDAxis.MinLimit = 0;
-                                _x3DVDAxis.MaxLimit = 49;
-                            }
-                            else
-                            {
-                                _x3DVDAxis.MinLimit = data3DVDPointCount - 49;
-                                _x3DVDAxis.MaxLimit = data3DVDPointCount;
-                            }
-                        }
-
+                        if (_gpu3DVDUsageData.Count > 50) _gpu3DVDUsageData.RemoveAt(0);
+                        UpdateAxisWindow(_x3DVDAxis, data3DVDPointCount);
                         data3DVDPointCount++;
                     }
-
-
-
                     else
                     {
                         GpuDisplayText = "No GPU detected";
@@ -653,6 +488,91 @@ namespace CoreStrike.DashBord
                     await Task.Delay(500, cancellationToken);
                 }
             }
+        }
+
+        // ══════════════════════════════════════════════════════════════════
+        // Helpers
+        // ══════════════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Slides the X axis window forward as new data points arrive.
+        /// </summary>
+        private static void UpdateAxisWindow(Axis? axis, int pointCount)
+        {
+            if (axis == null) return;
+            if (pointCount < 50)
+            {
+                axis.MinLimit = 0;
+                axis.MaxLimit = 49;
+            }
+            else
+            {
+                axis.MinLimit = pointCount - 49;
+                axis.MaxLimit = pointCount;
+            }
+        }
+
+        /// <summary>
+        /// Returns true when the selected GPU is an integrated GPU (Intel iGPU or
+        /// AMD integrated Radeon Graphics), meaning its fan and temperature must be
+        /// read from the CPU hardware instead.
+        /// </summary>
+        private static bool IsIntegratedGpu(IHardware hardware)
+        {
+            // All Intel GPUs reported by LibreHardwareMonitor are integrated
+            if (hardware.HardwareType == HardwareType.GpuIntel)
+                return true;
+
+            // AMD: discrete cards contain "rx ", "pro ", "fury", "vega 56/64", "vii"
+            // AMD integrated cards are "Radeon Graphics", "Vega 3/7/8/11", etc.
+            if (hardware.HardwareType == HardwareType.GpuAmd)
+            {
+                string name = hardware.Name.ToLower();
+                bool likelyDiscrete = name.Contains("rx ") ||
+                                      name.Contains(" pro ") ||
+                                      name.Contains("fury") ||
+                                      name.Contains("vega 56") ||
+                                      name.Contains("vega 64") ||
+                                      name.Contains(" vii");
+                return !likelyDiscrete;
+            }
+
+            return false; // NVIDIA cards are always discrete
+        }
+
+        /// <summary>
+        /// Finds the most appropriate CPU fan sensor using the following priority:
+        ///   1. Sensor whose name is exactly "CPU Fan"  (Board A)
+        ///   2. First fan sensor with RPM > 0           (Board B)
+        ///   3. First fan sensor regardless of RPM      (Board C fallback)
+        /// Returns null if no fan sensors exist at all.
+        /// </summary>
+        private static FanSensor? FindBestCpuFan(IHardware cpuHardware)
+        {
+            FanSensor? firstActive = null;
+            FanSensor? firstAny = null;
+
+            foreach (var sensor in cpuHardware.Sensors)
+            {
+                if (sensor.SensorType != SensorType.Fan) continue;
+
+                float rpm = sensor.Value ?? 0;
+                string name = sensor.Name;
+
+                // Priority 1: exact "CPU Fan" match
+                if (name.ToLower() == "cpu fan")
+                    return new FanSensor(name, rpm);
+
+                // Priority 2: first active fan
+                if (firstActive == null && rpm > 0)
+                    firstActive = new FanSensor(name, rpm);
+
+                // Priority 3: first any fan
+                if (firstAny == null)
+                    firstAny = new FanSensor(name, rpm);
+            }
+
+            return firstActive ?? firstAny;
         }
 
         private void OnPropertyChanged([CallerMemberName] string? propertyName = null)

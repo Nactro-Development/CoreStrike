@@ -169,6 +169,14 @@ namespace CoreStrike.DashBord
             private set { if (_systemFreeSpace != value) { _systemFreeSpace = value; OnPropertyChanged(); } }
         }
 
+        private float _driveUsagePercent = 0;
+
+        public float DriveUsagePercent
+        {
+            get => _driveUsagePercent;
+            private set { if (_driveUsagePercent != value) { _driveUsagePercent = value; OnPropertyChanged(); } }
+        }
+
         // ── Constructor ────────────────────────────────────────
         public StorageMonitoringService()
         {
@@ -488,11 +496,11 @@ namespace CoreStrike.DashBord
                 float freeGb = (totalBytes - usedBytes) / 1e9f;
                 float pct = usedBytes / totalBytes * 100f;
                
-
                 DriveUsedSpace = $"Used: {usedGb:F1} GB";
                 DriveFreeSpace = $"Free: {freeGb:F1} GB";
                 DriveTotalSpace = $"{totalGb:F1} GB";
                 DriveUsageText = $"Total Activity: {usageWrite:F0}%";
+                DriveUsagePercent = pct;
             }
             else
             {
@@ -500,6 +508,7 @@ namespace CoreStrike.DashBord
                 DriveFreeSpace = "N/A";
                 DriveTotalSpace = "N/A";
                 DriveUsageText = "N/A";
+                DriveUsagePercent = 0;
             }
 
             // Read / Write — distinguish throughput (MB/s) vs total data (GB)
