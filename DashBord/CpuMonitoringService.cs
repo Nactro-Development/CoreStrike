@@ -172,15 +172,19 @@ namespace CoreStrike.DashBord
             {
                 try
                 {
-                    if (_computer != null)
+                    // ── Update hardware on thread pool (non-blocking) ──
+                    await Task.Run(() =>
                     {
-                        foreach (var hardware in _computer.Hardware)
+                        if (_computer != null)
                         {
-                            hardware.Update();
-                            foreach (var subHardware in hardware.SubHardware)
-                                subHardware.Update();
+                            foreach (var hardware in _computer.Hardware)
+                            {
+                                hardware.Update();
+                                foreach (var subHardware in hardware.SubHardware)
+                                    subHardware.Update();
+                            }
                         }
-                    }
+                    }, cancellationToken);
 
                     var cpuHardware = _computer?.Hardware
                         .FirstOrDefault(h => h.HardwareType == HardwareType.Cpu);
@@ -370,7 +374,7 @@ namespace CoreStrike.DashBord
                         dataPointCount++;
                     }
 
-                    await Task.Delay(500, cancellationToken);
+                    await Task.Delay(1000, cancellationToken);
                 }
                 catch (OperationCanceledException)
                 {
@@ -379,7 +383,7 @@ namespace CoreStrike.DashBord
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"Error monitoring CPU: {ex.Message}");
-                    await Task.Delay(500, cancellationToken);
+                    await Task.Delay(1000, cancellationToken);
                 }
             }
 

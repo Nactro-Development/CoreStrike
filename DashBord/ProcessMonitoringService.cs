@@ -145,14 +145,14 @@ namespace CoreStrike.DashBord
             }
         }
 
-        private async Task MonitoringLoop(CancellationToken cancellationToken)
+         private async Task MonitoringLoop(CancellationToken cancellationToken)
         {
             try
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     await Task.Run(() => UpdateProcessData(), cancellationToken);
-                    await Task.Delay(2000, cancellationToken); // Update every 2 seconds
+                    await Task.Delay(3000, cancellationToken); // Update every 3 seconds (reduced frequency)
                 }
             }
             catch (OperationCanceledException)

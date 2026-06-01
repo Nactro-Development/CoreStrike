@@ -298,7 +298,7 @@ namespace CoreStrike.DashBord
         }
 
         // ── Monitor Loop ───────────────────────────────────────
-        private async Task MonitorStorageAsync(CancellationToken cancellationToken)
+         private async Task MonitorStorageAsync(CancellationToken cancellationToken)
         {
             bool firstRun = true;
 
@@ -316,8 +316,8 @@ namespace CoreStrike.DashBord
                             firstRun = false;
                         }
 
-                        // Update system storage every 5 seconds
-                        if (DateTime.UtcNow.Second % 5 == 0)
+                        // Update system storage every 10 seconds
+                        if (DateTime.UtcNow.Second % 10 == 0)
                         {
                             UpdateSystemTotalStorage();
                         }
@@ -335,7 +335,7 @@ namespace CoreStrike.DashBord
                         }
                     }
 
-                    await Task.Delay(1000, cancellationToken);
+                    await Task.Delay(2000, cancellationToken);
                 }
                 catch (OperationCanceledException)
                 {
@@ -344,7 +344,7 @@ namespace CoreStrike.DashBord
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"Storage monitor error: {ex.Message}");
-                    await Task.Delay(1000, cancellationToken);
+                    await Task.Delay(2000, cancellationToken);
                 }
             }
         }

@@ -269,16 +269,19 @@ namespace CoreStrike.DashBord
             {
                 try
                 {
-                    // Update all hardware
-                    if (_computer != null)
+                    // ── Update hardware on thread pool (non-blocking) ──
+                    await Task.Run(() =>
                     {
-                        foreach (var hardware in _computer.Hardware)
+                        if (_computer != null)
                         {
-                            hardware.Update();
-                            foreach (var subHardware in hardware.SubHardware)
-                                subHardware.Update();
+                            foreach (var hardware in _computer.Hardware)
+                            {
+                                hardware.Update();
+                                foreach (var subHardware in hardware.SubHardware)
+                                    subHardware.Update();
+                            }
                         }
-                    }
+                    }, cancellationToken);
 
                     var gpuHardware = (_gpuHardwareList.Count > 0 && _selectedGpuIndex < _gpuHardwareList.Count)
                         ? _gpuHardwareList[_selectedGpuIndex]
@@ -476,7 +479,7 @@ namespace CoreStrike.DashBord
                         GpuDisplayText = "No GPU detected";
                     }
 
-                    await Task.Delay(500, cancellationToken);
+                    await Task.Delay(1000, cancellationToken);
                 }
                 catch (OperationCanceledException)
                 {
@@ -485,7 +488,7 @@ namespace CoreStrike.DashBord
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"Error monitoring GPU: {ex.Message}");
-                    await Task.Delay(500, cancellationToken);
+                    await Task.Delay(1000, cancellationToken);
                 }
             }
         }

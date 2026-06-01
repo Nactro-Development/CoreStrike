@@ -30,13 +30,19 @@ namespace CoreStrike
 
         public MainWindow()
         {
+
+            this.InitializeComponent();
             InitializeComponent();
+
+
             AppWindow.TitleBar.PreferredTheme = TitleBarTheme.UseDefaultAppMode;
 
             if (this.Content is FrameworkElement rootElement)
             {
                 rootElement.Loaded += MainWindow_Loaded;
             }
+
+
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -45,7 +51,11 @@ namespace CoreStrike
             {
                 await CheckAndInstallPawnIO();
             }
+
+
         }
+
+
 
         private bool IsPawnIOInstalled()
         {

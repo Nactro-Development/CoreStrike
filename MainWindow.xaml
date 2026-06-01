@@ -63,6 +63,11 @@
 
             </NavigationView.MenuItems>
 
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Content="Donate" Tag="SamplePage4" Icon="Contact" />
+            </NavigationView.FooterMenuItems>
+
+
             <Frame BorderThickness="0" Background="Transparent" x:Name="contentFrame"/>
         </NavigationView>
 

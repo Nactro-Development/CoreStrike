@@ -25,6 +25,10 @@ namespace CoreStrike.BenchMarks
     {
         public BenchMarks()
         {
+            this.NavigationCacheMode =
+        Microsoft.UI.Xaml.Navigation.NavigationCacheMode.Required;
+
+
             InitializeComponent();
         }
     }

@@ -196,7 +196,7 @@ namespace CoreStrike.DashBord
         }
 
         // ── Monitor Loop ──────────────────────────────────────
-        private async Task MonitorMemoryAsync(CancellationToken cancellationToken)
+         private async Task MonitorMemoryAsync(CancellationToken cancellationToken)
         {
             bool firstRun = true;
 
@@ -204,16 +204,19 @@ namespace CoreStrike.DashBord
             {
                 try
                 {
-                    // ── Update hardware sensors ───────────────
-                    if (_computer != null)
+                    // ── Perform hardware updates on thread pool ──
+                    await Task.Run(() =>
                     {
-                        foreach (var hardware in _computer.Hardware)
+                        if (_computer != null)
                         {
-                            hardware.Update();
-                            foreach (var sub in hardware.SubHardware)
-                                sub.Update();
+                            foreach (var hardware in _computer.Hardware)
+                            {
+                                hardware.Update();
+                                foreach (var sub in hardware.SubHardware)
+                                    sub.Update();
+                            }
                         }
-                    }
+                    }, cancellationToken);
 
                     float memoryLoad = 0f;
                     float memoryUsedMb = 0f;
@@ -320,7 +323,7 @@ namespace CoreStrike.DashBord
 
                     _VdataPointCount++;
 
-                    await Task.Delay(500, cancellationToken);
+                    await Task.Delay(1000, cancellationToken);
                 }
                 catch (OperationCanceledException)
                 {
@@ -329,7 +332,7 @@ namespace CoreStrike.DashBord
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"Error monitoring Memory: {ex.Message}");
-                    await Task.Delay(500, cancellationToken);
+                    await Task.Delay(1000, cancellationToken);
                 }
             }
         }

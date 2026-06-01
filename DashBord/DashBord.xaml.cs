@@ -179,6 +179,10 @@ namespace CoreStrike.DashBord
         // ── Constructor ───────────────────────────────────────
         public DashBord()
         {
+
+            this.NavigationCacheMode =
+       Microsoft.UI.Xaml.Navigation.NavigationCacheMode.Required;
+
             InitializeComponent();
 
             _cpuService = new CpuMonitoringService();
@@ -261,17 +265,7 @@ namespace CoreStrike.DashBord
             };
             _stressTest.TestCompleted += (s, summary) => ShowStressTestSummary(summary);
 
-            Unloaded += (s, e) =>
-            {
-                _cpuService?.Cleanup();
-                _gpuService?.Cleanup();
-                _mbService?.Cleanup();
-                _memService?.Cleanup();
-                _storageService?.Cleanup();
-                _networkService?.Cleanup();
-                _processService?.Cleanup();
-                _stressTest.Stop();
-            };
+       
 
             StartFan();
             StartFanGPU();
