@@ -1,2 +1,3 @@
 # CoreStrike
-<img width="1917" height="1030" alt="image" src="https://github.com/user-attachments/assets/fe819f01-3361-4f42-b785-e539451bb4cf" />
+<img width="1919" height="1031" alt="image" src="https://github.com/user-attachments/assets/e45945d4-207e-498f-86ca-714d10ef48be" />
+
