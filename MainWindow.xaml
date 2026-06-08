@@ -12,64 +12,216 @@
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
-
+    
+    
     <Grid>
-
-        <NavigationView BorderThickness="0"  BorderBrush="Transparent" Background="Transparent"
- SelectionChanged="NavView_SelectionChanged">
-
-            <NavigationView.Resources>
-
-                <!-- LEFT PANE -->
-                <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground"
-                         Color="Transparent"/>
-
-                <!-- RIGHT CONTENT AREA (THIS is what you want) -->
-                <SolidColorBrush x:Key="NavigationViewContentBackground"
-                         Color="Transparent"/>
-
-                <!-- Remove content border -->
-                <Thickness x:Key="NavigationViewContentGridBorderThickness">0</Thickness>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!--  TitleBar  -->
+            <RowDefinition Height="*" />
+            <!--  NavigationView  -->
+        </Grid.RowDefinitions>
 
 
-                
-                <!-- Sometimes needed (WinUI quirks) -->
-                <SolidColorBrush x:Key="NavigationViewTopPaneBackground"
-                         Color="Transparent"/>
+        <TitleBar  x:Name="AppTitleBar"  VerticalAlignment="Top"
+    Title="CoreStrike"
+           
+    Subtitle="HW Monitoring"
+    IsBackButtonVisible="False"
+                   
+    IsPaneToggleButtonVisible="False">
+            <TitleBar.IconSource>
+                <ImageIconSource ImageSource="/Assets/logo2.ico" />
+            </TitleBar.IconSource>
+
+            <TitleBar.RightHeader>
+
+                <StackPanel Orientation="Horizontal" >
+                    <Button
+Background="Transparent"
+BorderThickness="0">
+
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel Spacing="8" Width="250">
+
+                                    <TextBlock
+                Text="User Profile"
+                FontSize="16"
+                FontWeight="Bold"/>
+
+                                    <TextBlock
+                x:Name="UserNameText"/>
+
+                                    <TextBlock
+                x:Name="PcNameText"/>
+
+                                    <TextBlock
+                x:Name="PcModelText"/>
+
+                                    <TextBlock
+                x:Name="UserIdText"
+                TextWrapping="WrapWholeWords"/>
+
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+
+                        <PersonPicture
+    x:Name="UserPicture"
+    Width="32"
+                    Foreground="{StaticResource SystemAccentColor}"
+                    BorderBrush="{StaticResource SystemAccentColor}"
+    Height="32"/>
+                    </Button>
+
+                    <StackPanel Margin="3,0,0,0" VerticalAlignment="Center">
+                        <TextBlock x:Name="UserName" FontSize="10" Text="CoreStrick" />
+                        <TextBlock  x:Name="PcName" Text="CoreStrick" />
+                    </StackPanel>
+                </StackPanel>
+           
+
+            </TitleBar.RightHeader>
+        </TitleBar>
+
+
+        <Grid  Grid.Row="1">
+            <Grid  x:Name="LoadingGrid">
+
+                <StackPanel
+     HorizontalAlignment="Center"
+     VerticalAlignment="Center"
+     Spacing="20">
+
+                    <Image Source="/Assets/logo2.png"
+            Width="120"
+            Height="120"/>
+
+                    <TextBlock Text="CoreStrike"
+                FontSize="30"
+                FontWeight="Bold"
+                HorizontalAlignment="Center"/>
+
+                    <ProgressRing IsActive="True"
+                   Width="50"
+                   Height="50"/>
+
+                    <TextBlock Text="Initializing System..."
+                HorizontalAlignment="Center"/>
+
+                </StackPanel>
+
+            </Grid>
+
+            <Grid  x:Name="MainContentGrid" >
+
+                <NavigationView x:Name="NavView"   IsBackButtonVisible="Collapsed" BorderThickness="0"  BorderBrush="Transparent" Background="Transparent"
+SelectionChanged="NavView_SelectionChanged">
+
+                    <NavigationView.Resources>
+
+                        <!-- LEFT PANE -->
+                        <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground"
+                        Color="Transparent"/>
+
+                        <!-- RIGHT CONTENT AREA (THIS is what you want) -->
+                        <SolidColorBrush x:Key="NavigationViewContentBackground"
+                        Color="Transparent"/>
+
+                        <!-- Remove content border -->
+                        <Thickness x:Key="NavigationViewContentGridBorderThickness">0</Thickness>
 
 
 
-            </NavigationView.Resources>
+                        <!-- Sometimes needed (WinUI quirks) -->
+                        <SolidColorBrush x:Key="NavigationViewTopPaneBackground"
+                        Color="Transparent"/>
 
 
-            <NavigationView.MenuItems>
-                <NavigationViewItem IsSelected="True" Content="DashBord" Tag="DashBord">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xECA5;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
 
-                <NavigationViewItem Content="BenchMarks" Tag="BenchMarks">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE9D9;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-
-                <NavigationViewItem Content="Ranking" Tag="Ranking">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE9D2;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-
-            </NavigationView.MenuItems>
-
-            <NavigationView.FooterMenuItems>
-                <NavigationViewItem Content="Donate" Tag="SamplePage4" Icon="Contact" />
-            </NavigationView.FooterMenuItems>
+                    </NavigationView.Resources>
 
 
-            <Frame BorderThickness="0" Background="Transparent" x:Name="contentFrame"/>
-        </NavigationView>
+                    <NavigationView.MenuItems>
+                        <NavigationViewItem Content="DashBord" Tag="DashBord">
+                            <NavigationViewItem.Icon>
+                                <FontIcon Glyph="&#xECA5;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
 
+                        <NavigationViewItem Content="BenchMarks" Tag="BenchMarks">
+                            <NavigationViewItem.Icon>
+                                <FontIcon Glyph="&#xE9D9;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+
+                        <NavigationViewItem Content="Ranking" Tag="Ranking">
+                            <NavigationViewItem.Icon>
+                                <FontIcon Glyph="&#xE9D2;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+
+                    </NavigationView.MenuItems>
+
+                    <NavigationView.FooterMenuItems>
+                        <NavigationViewItem Tag="Donate">
+                            <NavigationViewItem.Content>
+
+                                <Grid HorizontalAlignment="Left" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="11"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- PayPal Icon -->
+                                    <Image HorizontalAlignment="Center" Grid.Column="0"
+                      Source="Assets/174861.png"
+                      Width="18"
+                      Height="18"
+                      VerticalAlignment="Center"
+                                     />
+
+                                    <!-- Text -->
+                                    <StackPanel  HorizontalAlignment="Left" Margin="4,0,0,0" Grid.Column="2"
+                           VerticalAlignment="Center">
+
+
+                                        <TextBlock  Text="Donate"
+                              FontSize="14"
+                             
+                             
+                              HorizontalAlignment="Center"
+                              TextAlignment="Center"/>
+                                    </StackPanel>
+                                </Grid>
+                            </NavigationViewItem.Content>
+
+
+
+
+                        </NavigationViewItem>
+
+
+                        <NavigationViewItem Content="About" Tag="About">
+                            <NavigationViewItem.Icon>
+                                <FontIcon Glyph="&#xE783;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+
+                    </NavigationView.FooterMenuItems>
+
+
+                    <Frame BorderThickness="0" Background="Transparent" x:Name="contentFrame"/>
+                </NavigationView>
+
+            </Grid>
+        </Grid>
+     
+
+        <!-- Loading Screen -->
+      
     </Grid>
+
 </Window>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="CoreStrike.About.About"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CoreStrike.About"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel>
+
+        <TextBlock Margin="20,20,20,0" Text="About" FontSize="20" FontWeight="Bold" />
+
+
+        <Expander  VerticalAlignment="Top" Margin="20,20,20,0"  Width="auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Padding="0">
+            <Expander.Header>
+                <StackPanel Margin="0,10,0,10" Orientation="Horizontal" >
+                   <Image Source="/Assets/logo2.png" Width="35" />
+
+                    <StackPanel Margin="20,0,0,0">
+
+                        <TextBlock FontWeight="SemiBold"  Text="CoreStrike - Hardware Monitoring" />
+                        <TextBlock FontSize="10" FontWeight="Light"  Text="Copyright © nactro.inc 2026" />
+
+                    </StackPanel>
+ 
+                    
+                </StackPanel>
+            </Expander.Header>
+            <Expander.Content>
+                <TextBlock TextWrapping="Wrap" Margin="10" FontSize="13">
+
+    <Run FontSize="15" FontWeight="Bold" Text="CORESTRIKE SOFTWARE LICENSE AND NOTICE"/>
+    <LineBreak/>
+
+
+    <Run Text="Copyright © 2026 Nactro. All rights reserved."/>
+    <LineBreak/>
+    <LineBreak/>
+
+
+    <Run Text="CoreStrike is a system monitoring, diagnostics, and performance analysis application developed and maintained by Nactro. This software is designed to provide users with real-time information regarding hardware status, system health, resource utilization, and overall computer performance."/>
+    <LineBreak/>
+
+
+    <Run Text="By installing, copying, accessing, or using CoreStrike, you agree to comply with the terms and conditions outlined in this notice. If you do not agree with these terms, you should discontinue use of the software immediately."/>
+    <LineBreak/>
+
+
+    <Run Text="Permission is granted to install and use CoreStrike for personal, educational, and commercial purposes, provided that the software is not modified, reverse engineered, redistributed, resold, sublicensed, or repackaged without prior written authorization from Nactro."/>
+    <LineBreak/>
+
+
+    <Run Text="Users may not remove, alter, or obscure any copyright notices, trademarks, branding elements, or ownership information included within the software. Unauthorized modification or redistribution of CoreStrike may violate applicable copyright and intellectual property laws."/>
+    <LineBreak/>
+
+
+    <Run Text="CoreStrike incorporates and utilizes third-party open-source software components. These components remain the intellectual property of their respective authors and contributors and are distributed under their own license agreements."/>
+    <LineBreak/>
+
+
+    <Run Text="LibreHardwareMonitor is used for hardware monitoring, sensor detection, and hardware telemetry collection. LibreHardwareMonitor is distributed under the Mozilla Public License Version 2.0 (MPL-2.0)."/>
+    <LineBreak/>
+    <LineBreak/>
+
+    <Run Text="PawnIO is utilized to provide additional hardware communication, device interaction, and system information functionality where applicable. All rights and ownership of PawnIO remain with its respective developers."/>
+    <LineBreak/>
+
+
+    <Run Text="CoreStrike is an independent software product and is not affiliated with, endorsed by, sponsored by, or officially associated with the developers, maintainers, organizations, or contributors of any third-party libraries utilized by the application."/>
+    <LineBreak/>
+
+
+    <Run Text="The software is provided 'AS IS' without warranty of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, reliability, accuracy, availability, or non-infringement."/>
+    <LineBreak/>
+
+
+    <Run Text="In no event shall Nactro, its developers, contributors, affiliates, partners, or licensors be liable for any direct, indirect, incidental, special, consequential, or exemplary damages arising from the installation, use, misuse, inability to use, or performance of this software."/>
+    <LineBreak/>
+
+
+    <Run Text="Users assume full responsibility for verifying the accuracy of information presented by CoreStrike and for any decisions made based on such information. Hardware readings and diagnostic information may vary depending on system configuration, operating system limitations, firmware implementation, and third-party drivers."/>
+    <LineBreak/>
+
+
+    <Run Text="Nactro reserves the right to modify, update, discontinue, replace, or revise any aspect of CoreStrike, including features, functionality, licensing terms, and distribution methods, without prior notice."/>
+    <LineBreak/>
+    <LineBreak/>
+
+    <Run Text="All trademarks, service marks, product names, company names, and logos referenced within this software remain the property of their respective owners."/>
+    <LineBreak/>
+    <LineBreak/>
+
+    <Run Text="Version 1.0.0"/>
+    <LineBreak/>
+    <Run Text="Developed and maintained by Nactro."/>
+
+                </TextBlock>
+            </Expander.Content>
+        </Expander>
+
+
+        <Expander  VerticalAlignment="Top" Margin="20,10,20,0"  Width="auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Padding="0">
+            <Expander.Header>
+                <StackPanel Margin="0,10,0,10" Orientation="Horizontal" >
+                    <Image Source="/Assets/logo2.png" Width="35" />
+
+                    <StackPanel Margin="20,0,0,0">
+
+                        <TextBlock FontWeight="SemiBold"  Text="Extrnal Softwares" />
+                        <TextBlock FontSize="10" FontWeight="Light"  Text="Copyright c nactro.inc 2026" />
+
+                    </StackPanel>
+
+
+                </StackPanel>
+            </Expander.Header>
+            <Expander.Content>
+                <StackPanel>
+                    <TextBlock Margin="10,10,0,0" Text="LibreHardwareMonitor" FontSize="15" FontWeight="SemiBold" />
+                    <TextBlock   Margin="10,0,0,0"  FontWeight="Light" FontSize="10" Text="Mozilla Public License, Version 2.0, Copyright Michael Moller, LibreHardwareMonitor and Contributors" />
+                    <Button BorderBrush="Transparent" Background="Transparent"  Click="LibreHardwareMonitor_Click"  >
+
+                        <StackPanel HorizontalAlignment="Left" >
+                            <TextBlock Foreground="{StaticResource SystemAccentColor}" FontSize="10" Text="https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            
+            </Expander.Content>
+        </Expander>
+
+
+    </StackPanel>
+</Page>

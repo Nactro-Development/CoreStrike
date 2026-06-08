@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="CoreStrike.Donate.Donate"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CoreStrike.Donate"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid >
+
+        <Border Width="440"
+                Padding="32"
+                CornerRadius="16"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource SystemAccentColor}"
+                BorderThickness="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+            <StackPanel Spacing="10" HorizontalAlignment="Center">
+
+                <!-- Logo -->
+                <Image Source="/Assets/logo2.png"
+                       Width="72" Height="72"
+                       HorizontalAlignment="Center"/>
+
+                <!-- Title -->
+                <TextBlock Text="Donate to"
+                           FontSize="14"
+                           Opacity="0.6"
+                           HorizontalAlignment="Center"
+                           Margin="0,6,0,0"/>
+
+                <TextBlock Text="CoreStrike"
+                           FontSize="30"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Text="Developed by Nactro"
+                           FontSize="13"
+                           Opacity="0.6"
+                           HorizontalAlignment="Center"/>
+
+                <!-- QR Code -->
+                <Image Source="/Assets/qr-code.svg"
+                       Width="200" Height="200"
+                       Stretch="Uniform" 
+                       HorizontalAlignment="Center"
+                       Margin="0,10,0,10"/>
+
+                <!-- Description -->
+                <TextBlock Text="Support the development of CoreStrike"
+                           FontSize="14"
+                           Opacity="0.7"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Center"/>
+
+                <!-- PayPal Button -->
+                <Button Width="340"
+                        Height="52"
+                        CornerRadius="26"
+                        Background="#FFC439"
+                        Foreground="#003087"
+                        FontWeight="SemiBold"
+                        FontSize="17"
+                        HorizontalAlignment="Center"
+                        Margin="0,6,0,0"
+                        Click="Donate_Click">
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="10">
+
+                        <Image Source="/Assets/174861.png"
+                               Width="22" Height="22"
+                               VerticalAlignment="Center"/>
+
+                        <TextBlock Text="Donate with PayPal"
+                                   VerticalAlignment="Center"/>
+
+                    </StackPanel>
+
+                </Button>
+
+            </StackPanel>
+
+        </Border>
+
+    </Grid>
+
+</Page>

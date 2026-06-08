@@ -28,6 +28,7 @@ namespace CoreStrike.DashBord
         private MemoryMonitoringService? _memService;
         private NetworkMonitoringService? _networkService;
         private ProcessMonitoringService? _processService;
+        public static event Action DashboardReady;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         private StorageMonitoringService? _storageService;
@@ -269,7 +270,17 @@ namespace CoreStrike.DashBord
 
             StartFan();
             StartFanGPU();
+
+            Loaded += DashBord_Loaded;
         }
+
+
+        private void DashBord_Loaded(object sender, RoutedEventArgs e)
+        {
+            DashboardReady?.Invoke();
+        }
+
+
 
         // ── Chart Init ────────────────────────────────────────
         private void InitializeChart()

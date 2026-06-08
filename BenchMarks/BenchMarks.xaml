@@ -3,12 +3,188 @@
     x:Class="CoreStrike.BenchMarks.BenchMarks"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:CoreStrike.BenchMarks"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
+    <ScrollViewer Padding="24">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-    </Grid>
+            <!-- Left Column -->
+            <StackPanel Grid.Column="0" Spacing="10" Margin="0,0,12,0">
+
+                <TextBlock Text="CoreStrike System Benchmark" FontSize="22" FontWeight="SemiBold"/>
+                <TextBlock Text="Benchmark CPU, Memory and Storage performance."
+                           FontSize="13" Opacity="0.6" Margin="0,0,0,6"/>
+
+                <Button x:Name="RunBenchmarkButton"
+                        Content="Run Full Benchmark"
+                        HorizontalAlignment="Stretch"
+                        Height="40"
+                        Click="RunBenchmarkButton_Click"/>
+
+                <ProgressBar x:Name="BenchmarkProgress"
+                             Visibility="Collapsed"
+                             IsIndeterminate="True"
+                             Height="4"/>
+
+                <!-- Overall Score -->
+                <Border Padding="16" CornerRadius="10"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Overall Score" FontSize="12" Opacity="0.6"/>
+                        <TextBlock x:Name="OverallScoreText" Text="0" FontSize="36" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="GradeText" Text="Grade: -" FontSize="13" Opacity="0.6"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- CPU + Memory side by side -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Padding="16" CornerRadius="10" Margin="0,0,5,0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="CPU Score" FontSize="12" Opacity="0.6"/>
+                            <TextBlock x:Name="CpuScoreText" Text="0" FontSize="22" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Padding="16" CornerRadius="10" Margin="5,0,0,0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Memory Score" FontSize="12" Opacity="0.6"/>
+                            <TextBlock x:Name="MemoryScoreText" Text="0" FontSize="22" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Disk Score -->
+                <Border Padding="16" CornerRadius="10"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Disk Score" FontSize="12" Opacity="0.6"/>
+                        <TextBlock x:Name="DiskScoreText" Text="0" FontSize="22" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Details -->
+                <Border Padding="16" CornerRadius="10"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Details" FontSize="12" Opacity="0.6"/>
+                        <TextBlock x:Name="CpuDetailsText" FontSize="13"/>
+                        <TextBlock x:Name="MemoryDetailsText" FontSize="13"/>
+                        <TextBlock x:Name="DiskDetailsText" FontSize="13"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+            
+            
+            
+
+            <!-- Right Column: History -->
+            <StackPanel Grid.Column="1" Margin="12,0,0,0">
+
+                <TextBlock Text="Benchmark History"
+                           FontSize="20" FontWeight="SemiBold"
+                           Margin="0,0,0,12"/>
+
+                <Border CornerRadius="10"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+                    <ListView x:Name="HistoryListView"
+                              SelectionMode="None"
+                              IsItemClickEnabled="False">
+
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="MinHeight" Value="0"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+
+                        <!-- Header -->
+                        <ListView.Header>
+                            <Grid Padding="14,10" Background="{ThemeResource SubtleFillColorSecondaryBrush}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Date" FontSize="12" FontWeight="SemiBold" Opacity="0.6"/>
+                                <TextBlock Grid.Column="1" Text="CPU" FontSize="12" FontWeight="SemiBold" Opacity="0.6" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="Memory" FontSize="12" FontWeight="SemiBold" Opacity="0.6" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Text="Disk" FontSize="12" FontWeight="SemiBold" Opacity="0.6" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="4" Text="Overall" FontSize="12" FontWeight="SemiBold" Opacity="0.6" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="5" Text="Grade" FontSize="12" FontWeight="SemiBold" Opacity="0.6" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </ListView.Header>
+
+                        <!-- Row Template -->
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                                        BorderThickness="0,1,0,0">
+                                    <Grid Padding="14,0" Height="44">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" Text="{Binding Date}"
+                                                   FontSize="13" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis" Opacity="0.7"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding CpuScore}"
+                                                   FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding MemoryScore}"
+                                                   FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding DiskScore}"
+                                                   FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding OverallScore}"
+                                                   FontSize="13" FontWeight="SemiBold"
+                                                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="5" Text="{Binding Grade}"
+                                                   FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
+                </Border>
+
+            </StackPanel>
+
+        </Grid>
+    </ScrollViewer>
+
 </Page>

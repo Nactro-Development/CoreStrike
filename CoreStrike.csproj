@@ -16,18 +16,341 @@
 
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="About\About.xaml" />
     <None Remove="Assets\fan.svg" />
+    <None Remove="Assets\LargeTile.scale-100.png" />
+    <None Remove="Assets\LargeTile.scale-125.png" />
+    <None Remove="Assets\LargeTile.scale-150.png" />
+    <None Remove="Assets\LargeTile.scale-200.png" />
+    <None Remove="Assets\LargeTile.scale-400.png" />
+    <None Remove="Assets\LockScreenLogo.scale-200.png" />
+    <None Remove="Assets\logo2.ico" />
+    <None Remove="Assets\logo2.png" />
+    <None Remove="Assets\QR Code.png" />
+    <None Remove="Assets\qr-code.svg" />
+    <None Remove="Assets\SmallTile.scale-100.png" />
+    <None Remove="Assets\SmallTile.scale-125.png" />
+    <None Remove="Assets\SmallTile.scale-150.png" />
+    <None Remove="Assets\SmallTile.scale-200.png" />
+    <None Remove="Assets\SmallTile.scale-400.png" />
+    <None Remove="Assets\SplashScreen.scale-100.png" />
+    <None Remove="Assets\SplashScreen.scale-125.png" />
+    <None Remove="Assets\SplashScreen.scale-150.png" />
+    <None Remove="Assets\SplashScreen.scale-200.png" />
+    <None Remove="Assets\SplashScreen.scale-400.png" />
+    <None Remove="Assets\Square150x150Logo.scale-100.png" />
+    <None Remove="Assets\Square150x150Logo.scale-125.png" />
+    <None Remove="Assets\Square150x150Logo.scale-150.png" />
+    <None Remove="Assets\Square150x150Logo.scale-200.png" />
+    <None Remove="Assets\Square150x150Logo.scale-400.png" />
+    <None Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <None Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+    <None Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <None Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <None Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <None Remove="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <None Remove="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <None Remove="Assets\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <None Remove="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <None Remove="Assets\Square44x44Logo.scale-100.png" />
+    <None Remove="Assets\Square44x44Logo.scale-125.png" />
+    <None Remove="Assets\Square44x44Logo.scale-150.png" />
+    <None Remove="Assets\Square44x44Logo.scale-200.png" />
+    <None Remove="Assets\Square44x44Logo.scale-400.png" />
+    <None Remove="Assets\Square44x44Logo.targetsize-16.png" />
+    <None Remove="Assets\Square44x44Logo.targetsize-24.png" />
+    <None Remove="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <None Remove="Assets\Square44x44Logo.targetsize-256.png" />
+    <None Remove="Assets\Square44x44Logo.targetsize-32.png" />
+    <None Remove="Assets\Square44x44Logo.targetsize-48.png" />
+    <None Remove="Assets\StoreLogo.backup.png" />
+    <None Remove="Assets\StoreLogo.scale-100.png" />
+    <None Remove="Assets\StoreLogo.scale-125.png" />
+    <None Remove="Assets\StoreLogo.scale-150.png" />
+    <None Remove="Assets\StoreLogo.scale-200.png" />
+    <None Remove="Assets\StoreLogo.scale-400.png" />
+    <None Remove="Assets\Wide310x150Logo.scale-100.png" />
+    <None Remove="Assets\Wide310x150Logo.scale-125.png" />
+    <None Remove="Assets\Wide310x150Logo.scale-150.png" />
+    <None Remove="Assets\Wide310x150Logo.scale-200.png" />
+    <None Remove="Assets\Wide310x150Logo.scale-400.png" />
+    <None Remove="Donate\Donate.xaml" />
+    <None Remove="Assets\flags\1x1\ad.svg" />
+    <None Remove="Assets\flags\1x1\ae.svg" />
+    <None Remove="Assets\flags\1x1\af.svg" />
+    <None Remove="Assets\flags\1x1\ag.svg" />
+    <None Remove="Assets\flags\1x1\ai.svg" />
+    <None Remove="Assets\flags\1x1\al.svg" />
+    <None Remove="Assets\flags\1x1\am.svg" />
+    <None Remove="Assets\flags\1x1\ao.svg" />
+    <None Remove="Assets\flags\1x1\aq.svg" />
+    <None Remove="Assets\flags\1x1\ar.svg" />
+    <None Remove="Assets\flags\1x1\arab.svg" />
+    <None Remove="Assets\flags\1x1\as.svg" />
+    <None Remove="Assets\flags\1x1\asean.svg" />
+    <None Remove="Assets\flags\1x1\at.svg" />
+    <None Remove="Assets\flags\1x1\au.svg" />
+    <None Remove="Assets\flags\1x1\aw.svg" />
+    <None Remove="Assets\flags\1x1\ax.svg" />
+    <None Remove="Assets\flags\1x1\az.svg" />
+    <None Remove="Assets\flags\1x1\ba.svg" />
+    <None Remove="Assets\flags\1x1\bb.svg" />
+    <None Remove="Assets\flags\1x1\bd.svg" />
+    <None Remove="Assets\flags\1x1\be.svg" />
+    <None Remove="Assets\flags\1x1\bf.svg" />
+    <None Remove="Assets\flags\1x1\bg.svg" />
+    <None Remove="Assets\flags\1x1\bh.svg" />
+    <None Remove="Assets\flags\1x1\bi.svg" />
+    <None Remove="Assets\flags\1x1\bj.svg" />
+    <None Remove="Assets\flags\1x1\bl.svg" />
+    <None Remove="Assets\flags\1x1\bm.svg" />
+    <None Remove="Assets\flags\1x1\bn.svg" />
+    <None Remove="Assets\flags\1x1\bo.svg" />
+    <None Remove="Assets\flags\1x1\bq.svg" />
+    <None Remove="Assets\flags\1x1\br.svg" />
+    <None Remove="Assets\flags\1x1\bs.svg" />
+    <None Remove="Assets\flags\1x1\bt.svg" />
+    <None Remove="Assets\flags\1x1\bv.svg" />
+    <None Remove="Assets\flags\1x1\bw.svg" />
+    <None Remove="Assets\flags\1x1\by.svg" />
+    <None Remove="Assets\flags\1x1\bz.svg" />
+    <None Remove="Assets\flags\1x1\ca.svg" />
+    <None Remove="Assets\flags\1x1\cc.svg" />
+    <None Remove="Assets\flags\1x1\cd.svg" />
+    <None Remove="Assets\flags\1x1\cefta.svg" />
+    <None Remove="Assets\flags\1x1\cf.svg" />
+    <None Remove="Assets\flags\1x1\cg.svg" />
+    <None Remove="Assets\flags\1x1\ch.svg" />
+    <None Remove="Assets\flags\1x1\ci.svg" />
+    <None Remove="Assets\flags\1x1\ck.svg" />
+    <None Remove="Assets\flags\1x1\cl.svg" />
+    <None Remove="Assets\flags\1x1\cm.svg" />
+    <None Remove="Assets\flags\1x1\cn.svg" />
+    <None Remove="Assets\flags\1x1\co.svg" />
+    <None Remove="Assets\flags\1x1\cp.svg" />
+    <None Remove="Assets\flags\1x1\cr.svg" />
+    <None Remove="Assets\flags\1x1\cu.svg" />
+    <None Remove="Assets\flags\1x1\cv.svg" />
+    <None Remove="Assets\flags\1x1\cw.svg" />
+    <None Remove="Assets\flags\1x1\cx.svg" />
+    <None Remove="Assets\flags\1x1\cy.svg" />
+    <None Remove="Assets\flags\1x1\cz.svg" />
+    <None Remove="Assets\flags\1x1\de.svg" />
+    <None Remove="Assets\flags\1x1\dg.svg" />
+    <None Remove="Assets\flags\1x1\dj.svg" />
+    <None Remove="Assets\flags\1x1\dk.svg" />
+    <None Remove="Assets\flags\1x1\dm.svg" />
+    <None Remove="Assets\flags\1x1\do.svg" />
+    <None Remove="Assets\flags\1x1\dz.svg" />
+    <None Remove="Assets\flags\1x1\eac.svg" />
+    <None Remove="Assets\flags\1x1\ec.svg" />
+    <None Remove="Assets\flags\1x1\ee.svg" />
+    <None Remove="Assets\flags\1x1\eg.svg" />
+    <None Remove="Assets\flags\1x1\eh.svg" />
+    <None Remove="Assets\flags\1x1\er.svg" />
+    <None Remove="Assets\flags\1x1\es-ct.svg" />
+    <None Remove="Assets\flags\1x1\es-ga.svg" />
+    <None Remove="Assets\flags\1x1\es-pv.svg" />
+    <None Remove="Assets\flags\1x1\es.svg" />
+    <None Remove="Assets\flags\1x1\et.svg" />
+    <None Remove="Assets\flags\1x1\eu.svg" />
+    <None Remove="Assets\flags\1x1\fi.svg" />
+    <None Remove="Assets\flags\1x1\fj.svg" />
+    <None Remove="Assets\flags\1x1\fk.svg" />
+    <None Remove="Assets\flags\1x1\fm.svg" />
+    <None Remove="Assets\flags\1x1\fo.svg" />
+    <None Remove="Assets\flags\1x1\fr.svg" />
+    <None Remove="Assets\flags\1x1\ga.svg" />
+    <None Remove="Assets\flags\1x1\gb-eng.svg" />
+    <None Remove="Assets\flags\1x1\gb-nir.svg" />
+    <None Remove="Assets\flags\1x1\gb-sct.svg" />
+    <None Remove="Assets\flags\1x1\gb-wls.svg" />
+    <None Remove="Assets\flags\1x1\gb.svg" />
+    <None Remove="Assets\flags\1x1\gd.svg" />
+    <None Remove="Assets\flags\1x1\ge.svg" />
+    <None Remove="Assets\flags\1x1\gf.svg" />
+    <None Remove="Assets\flags\1x1\gg.svg" />
+    <None Remove="Assets\flags\1x1\gh.svg" />
+    <None Remove="Assets\flags\1x1\gi.svg" />
+    <None Remove="Assets\flags\1x1\gl.svg" />
+    <None Remove="Assets\flags\1x1\gm.svg" />
+    <None Remove="Assets\flags\1x1\gn.svg" />
+    <None Remove="Assets\flags\1x1\gp.svg" />
+    <None Remove="Assets\flags\1x1\gq.svg" />
+    <None Remove="Assets\flags\1x1\gr.svg" />
+    <None Remove="Assets\flags\1x1\gs.svg" />
+    <None Remove="Assets\flags\1x1\gt.svg" />
+    <None Remove="Assets\flags\1x1\gu.svg" />
+    <None Remove="Assets\flags\1x1\gw.svg" />
+    <None Remove="Assets\flags\1x1\gy.svg" />
+    <None Remove="Assets\flags\1x1\hk.svg" />
+    <None Remove="Assets\flags\1x1\hm.svg" />
+    <None Remove="Assets\flags\1x1\hn.svg" />
+    <None Remove="Assets\flags\1x1\hr.svg" />
+    <None Remove="Assets\flags\1x1\ht.svg" />
+    <None Remove="Assets\flags\1x1\hu.svg" />
+    <None Remove="Assets\flags\1x1\ic.svg" />
+    <None Remove="Assets\flags\1x1\id.svg" />
+    <None Remove="Assets\flags\1x1\ie.svg" />
+    <None Remove="Assets\flags\1x1\il.svg" />
+    <None Remove="Assets\flags\1x1\im.svg" />
+    <None Remove="Assets\flags\1x1\in.svg" />
+    <None Remove="Assets\flags\1x1\io.svg" />
+    <None Remove="Assets\flags\1x1\iq.svg" />
+    <None Remove="Assets\flags\1x1\ir.svg" />
+    <None Remove="Assets\flags\1x1\is.svg" />
+    <None Remove="Assets\flags\1x1\it.svg" />
+    <None Remove="Assets\flags\1x1\je.svg" />
+    <None Remove="Assets\flags\1x1\jm.svg" />
+    <None Remove="Assets\flags\1x1\jo.svg" />
+    <None Remove="Assets\flags\1x1\jp.svg" />
+    <None Remove="Assets\flags\1x1\ke.svg" />
+    <None Remove="Assets\flags\1x1\kg.svg" />
+    <None Remove="Assets\flags\1x1\kh.svg" />
+    <None Remove="Assets\flags\1x1\ki.svg" />
+    <None Remove="Assets\flags\1x1\km.svg" />
+    <None Remove="Assets\flags\1x1\kn.svg" />
+    <None Remove="Assets\flags\1x1\kp.svg" />
+    <None Remove="Assets\flags\1x1\kr.svg" />
+    <None Remove="Assets\flags\1x1\kw.svg" />
+    <None Remove="Assets\flags\1x1\ky.svg" />
+    <None Remove="Assets\flags\1x1\kz.svg" />
+    <None Remove="Assets\flags\1x1\la.svg" />
+    <None Remove="Assets\flags\1x1\lb.svg" />
+    <None Remove="Assets\flags\1x1\lc.svg" />
+    <None Remove="Assets\flags\1x1\li.svg" />
+    <None Remove="Assets\flags\1x1\lk.svg" />
+    <None Remove="Assets\flags\1x1\lr.svg" />
+    <None Remove="Assets\flags\1x1\ls.svg" />
+    <None Remove="Assets\flags\1x1\lt.svg" />
+    <None Remove="Assets\flags\1x1\lu.svg" />
+    <None Remove="Assets\flags\1x1\lv.svg" />
+    <None Remove="Assets\flags\1x1\ly.svg" />
+    <None Remove="Assets\flags\1x1\ma.svg" />
+    <None Remove="Assets\flags\1x1\mc.svg" />
+    <None Remove="Assets\flags\1x1\md.svg" />
+    <None Remove="Assets\flags\1x1\me.svg" />
+    <None Remove="Assets\flags\1x1\mf.svg" />
+    <None Remove="Assets\flags\1x1\mg.svg" />
+    <None Remove="Assets\flags\1x1\mh.svg" />
+    <None Remove="Assets\flags\1x1\mk.svg" />
+    <None Remove="Assets\flags\1x1\ml.svg" />
+    <None Remove="Assets\flags\1x1\mm.svg" />
+    <None Remove="Assets\flags\1x1\mn.svg" />
+    <None Remove="Assets\flags\1x1\mo.svg" />
+    <None Remove="Assets\flags\1x1\mp.svg" />
+    <None Remove="Assets\flags\1x1\mq.svg" />
+    <None Remove="Assets\flags\1x1\mr.svg" />
+    <None Remove="Assets\flags\1x1\ms.svg" />
+    <None Remove="Assets\flags\1x1\mt.svg" />
+    <None Remove="Assets\flags\1x1\mu.svg" />
+    <None Remove="Assets\flags\1x1\mv.svg" />
+    <None Remove="Assets\flags\1x1\mw.svg" />
+    <None Remove="Assets\flags\1x1\mx.svg" />
+    <None Remove="Assets\flags\1x1\my.svg" />
+    <None Remove="Assets\flags\1x1\mz.svg" />
+    <None Remove="Assets\flags\1x1\na.svg" />
+    <None Remove="Assets\flags\1x1\nc.svg" />
+    <None Remove="Assets\flags\1x1\ne.svg" />
+    <None Remove="Assets\flags\1x1\nf.svg" />
+    <None Remove="Assets\flags\1x1\ng.svg" />
+    <None Remove="Assets\flags\1x1\ni.svg" />
+    <None Remove="Assets\flags\1x1\nl.svg" />
+    <None Remove="Assets\flags\1x1\no.svg" />
+    <None Remove="Assets\flags\1x1\np.svg" />
+    <None Remove="Assets\flags\1x1\nr.svg" />
+    <None Remove="Assets\flags\1x1\nu.svg" />
+    <None Remove="Assets\flags\1x1\nz.svg" />
+    <None Remove="Assets\flags\1x1\om.svg" />
+    <None Remove="Assets\flags\1x1\pa.svg" />
+    <None Remove="Assets\flags\1x1\pc.svg" />
+    <None Remove="Assets\flags\1x1\pe.svg" />
+    <None Remove="Assets\flags\1x1\pf.svg" />
+    <None Remove="Assets\flags\1x1\pg.svg" />
+    <None Remove="Assets\flags\1x1\ph.svg" />
+    <None Remove="Assets\flags\1x1\pk.svg" />
+    <None Remove="Assets\flags\1x1\pl.svg" />
+    <None Remove="Assets\flags\1x1\pm.svg" />
+    <None Remove="Assets\flags\1x1\pn.svg" />
+    <None Remove="Assets\flags\1x1\pr.svg" />
+    <None Remove="Assets\flags\1x1\ps.svg" />
+    <None Remove="Assets\flags\1x1\pt.svg" />
+    <None Remove="Assets\flags\1x1\pw.svg" />
+    <None Remove="Assets\flags\1x1\py.svg" />
+    <None Remove="Assets\flags\1x1\qa.svg" />
+    <None Remove="Assets\flags\1x1\re.svg" />
+    <None Remove="Assets\flags\1x1\ro.svg" />
+    <None Remove="Assets\flags\1x1\rs.svg" />
+    <None Remove="Assets\flags\1x1\ru.svg" />
+    <None Remove="Assets\flags\1x1\rw.svg" />
+    <None Remove="Assets\flags\1x1\sa.svg" />
+    <None Remove="Assets\flags\1x1\sb.svg" />
+    <None Remove="Assets\flags\1x1\sc.svg" />
+    <None Remove="Assets\flags\1x1\sd.svg" />
+    <None Remove="Assets\flags\1x1\se.svg" />
+    <None Remove="Assets\flags\1x1\sg.svg" />
+    <None Remove="Assets\flags\1x1\sh-ac.svg" />
+    <None Remove="Assets\flags\1x1\sh-hl.svg" />
+    <None Remove="Assets\flags\1x1\sh-ta.svg" />
+    <None Remove="Assets\flags\1x1\sh.svg" />
+    <None Remove="Assets\flags\1x1\si.svg" />
+    <None Remove="Assets\flags\1x1\sj.svg" />
+    <None Remove="Assets\flags\1x1\sk.svg" />
+    <None Remove="Assets\flags\1x1\sl.svg" />
+    <None Remove="Assets\flags\1x1\sm.svg" />
+    <None Remove="Assets\flags\1x1\sn.svg" />
+    <None Remove="Assets\flags\1x1\so.svg" />
+    <None Remove="Assets\flags\1x1\sr.svg" />
+    <None Remove="Assets\flags\1x1\ss.svg" />
+    <None Remove="Assets\flags\1x1\st.svg" />
+    <None Remove="Assets\flags\1x1\sv.svg" />
+    <None Remove="Assets\flags\1x1\sx.svg" />
+    <None Remove="Assets\flags\1x1\sy.svg" />
+    <None Remove="Assets\flags\1x1\sz.svg" />
+    <None Remove="Assets\flags\1x1\tc.svg" />
+    <None Remove="Assets\flags\1x1\td.svg" />
+    <None Remove="Assets\flags\1x1\tf.svg" />
+    <None Remove="Assets\flags\1x1\tg.svg" />
+    <None Remove="Assets\flags\1x1\th.svg" />
+    <None Remove="Assets\flags\1x1\tj.svg" />
+    <None Remove="Assets\flags\1x1\tk.svg" />
+    <None Remove="Assets\flags\1x1\tl.svg" />
+    <None Remove="Assets\flags\1x1\tm.svg" />
+    <None Remove="Assets\flags\1x1\tn.svg" />
+    <None Remove="Assets\flags\1x1\to.svg" />
+    <None Remove="Assets\flags\1x1\tr.svg" />
+    <None Remove="Assets\flags\1x1\tt.svg" />
+    <None Remove="Assets\flags\1x1\tv.svg" />
+    <None Remove="Assets\flags\1x1\tw.svg" />
+    <None Remove="Assets\flags\1x1\tz.svg" />
+    <None Remove="Assets\flags\1x1\ua.svg" />
+    <None Remove="Assets\flags\1x1\ug.svg" />
+    <None Remove="Assets\flags\1x1\um.svg" />
+    <None Remove="Assets\flags\1x1\un.svg" />
+    <None Remove="Assets\flags\1x1\us.svg" />
+    <None Remove="Assets\flags\1x1\uy.svg" />
+    <None Remove="Assets\flags\1x1\uz.svg" />
+    <None Remove="Assets\flags\1x1\va.svg" />
+    <None Remove="Assets\flags\1x1\vc.svg" />
+    <None Remove="Assets\flags\1x1\ve.svg" />
+    <None Remove="Assets\flags\1x1\vg.svg" />
+    <None Remove="Assets\flags\1x1\vi.svg" />
+    <None Remove="Assets\flags\1x1\vn.svg" />
+    <None Remove="Assets\flags\1x1\vu.svg" />
+    <None Remove="Assets\flags\1x1\wf.svg" />
+    <None Remove="Assets\flags\1x1\ws.svg" />
+    <None Remove="Assets\flags\1x1\xk.svg" />
+    <None Remove="Assets\flags\1x1\xx.svg" />
+    <None Remove="Assets\flags\1x1\ye.svg" />
+    <None Remove="Assets\flags\1x1\yt.svg" />
+    <None Remove="Assets\flags\1x1\za.svg" />
+    <None Remove="Assets\flags\1x1\zm.svg" />
+    <None Remove="Assets\flags\1x1\zw.svg" />
     <None Remove="Resources\PawnIO_setup.exe" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="logo2.ico" />
     <Content Include="Resources\PawnIO_setup.exe" />
   </ItemGroup>
 
@@ -48,6 +371,8 @@
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WinUI" Version="2.0.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1721" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260317003" />
+    <PackageReference Include="postgrest-csharp" Version="3.5.1" />
+    <PackageReference Include="Supabase" Version="1.1.1" />
     <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="10.0.6" />
   </ItemGroup>
 
@@ -62,13 +387,1004 @@
 
   <!-- Publish Properties -->
   <PropertyGroup>
-    <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
-    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
-    <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
-    <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+
+    <ApplicationIcon>logo2.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Page Update="Donate\Donate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Content Update="Assets\174861.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\fan.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ad.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ae.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\af.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ag.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ai.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\al.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\am.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ao.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\aq.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ar.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\arab.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\as.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\asean.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\at.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\au.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\aw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ax.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\az.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ba.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bb.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bd.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\be.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bf.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bh.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bi.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bj.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bl.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bo.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bq.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\br.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bs.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bt.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bv.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\by.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\bz.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ca.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cc.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cd.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cefta.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cf.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ch.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ci.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ck.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cl.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\co.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cp.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cu.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cv.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cx.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cy.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\cz.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\de.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\dg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\dj.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\dk.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\dm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\do.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\dz.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\eac.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ec.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ee.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\eg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\eh.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\er.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\es-ct.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\es-ga.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\es-pv.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\es.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\et.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\eu.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\fi.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\fj.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\fk.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\fm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\fo.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\fr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ga.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gb-eng.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gb-nir.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gb-sct.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gb-wls.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gb.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gd.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ge.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gf.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gh.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gi.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gl.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gp.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gq.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gs.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gt.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gu.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\gy.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\hk.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\hm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\hn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\hr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ht.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\hu.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ic.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\id.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ie.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\il.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\im.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\in.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\io.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\iq.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ir.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\is.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\it.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\je.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\jm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\jo.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\jp.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ke.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\kg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\kh.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ki.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\km.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\kn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\kp.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\kr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\kw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ky.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\kz.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\la.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\lb.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\lc.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\li.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\lk.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\lr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ls.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\lt.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\lu.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\lv.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ly.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ma.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mc.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\md.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\me.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mf.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mh.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mk.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ml.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mo.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mp.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mq.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ms.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mt.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mu.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mv.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mx.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\my.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\mz.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\na.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\nc.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ne.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\nf.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ng.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ni.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\nl.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\no.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\np.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\nr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\nu.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\nz.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\om.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pa.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pc.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pe.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pf.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ph.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pk.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pl.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ps.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pt.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\pw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\py.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\qa.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\re.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ro.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\rs.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ru.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\rw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sa.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sb.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sc.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sd.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\se.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sh-ac.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sh-hl.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sh-ta.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sh.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\si.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sj.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sk.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sl.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\so.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ss.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\st.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sv.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sx.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sy.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\sz.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tc.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\td.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tf.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\th.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tj.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tk.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tl.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\to.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tr.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tt.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tv.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\tz.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ua.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ug.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\um.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\un.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\us.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\uy.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\uz.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\va.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\vc.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ve.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\vg.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\vi.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\vn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\vu.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\wf.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ws.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\xk.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\xx.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\ye.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\yt.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\za.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\zm.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\flags\1x1\zw.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\LargeTile.scale-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\LargeTile.scale-125.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\LargeTile.scale-150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\LargeTile.scale-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\LargeTile.scale-400.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\LockScreenLogo.scale-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\logo2.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\logo2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\QR Code.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\qr-code.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SmallTile.scale-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SmallTile.scale-125.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SmallTile.scale-150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SmallTile.scale-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SmallTile.scale-400.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SplashScreen.scale-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SplashScreen.scale-125.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SplashScreen.scale-150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SplashScreen.scale-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SplashScreen.scale-400.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square150x150Logo.scale-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square150x150Logo.scale-125.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square150x150Logo.scale-150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square150x150Logo.scale-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square150x150Logo.scale-400.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.altform-unplated_targetsize-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.altform-unplated_targetsize-256.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.altform-unplated_targetsize-32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.altform-unplated_targetsize-48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.scale-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.scale-125.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.scale-150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.scale-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.scale-400.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.targetsize-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.targetsize-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.targetsize-256.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.targetsize-32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.targetsize-48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\StoreLogo.backup.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\StoreLogo.scale-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\StoreLogo.scale-125.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\StoreLogo.scale-150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\StoreLogo.scale-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\StoreLogo.scale-400.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Wide310x150Logo.scale-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Wide310x150Logo.scale-125.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Wide310x150Logo.scale-150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Wide310x150Logo.scale-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Wide310x150Logo.scale-400.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Page Update="About\About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="Resources\pawanio.exe">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
