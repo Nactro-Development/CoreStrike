@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CoreStrikeSetup (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "CoreStrikeSetup (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

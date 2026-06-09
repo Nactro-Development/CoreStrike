@@ -1,0 +1,44 @@
+<Window
+    x:Class="CoreStrikeSetup.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="CoreStrike Installer">
+
+    <Grid>
+        <StackPanel
+            Spacing="15"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+
+            <TextBlock
+                Text="CoreStrike Installer"
+                FontSize="32"
+                HorizontalAlignment="Center"/>
+
+            <TextBlock
+                x:Name="StatusText"
+                Text="Ready to install"
+                HorizontalAlignment="Center"/>
+
+            <ProgressBar
+                x:Name="InstallProgress"
+                Width="350"
+                Height="8"
+                Value="0"/>
+
+            <Button
+                x:Name="InstallButton"
+                Content="Install"
+                Width="200"
+                Click="Install_Click"/>
+
+            <Button
+                x:Name="LaunchButton"
+                Content="Launch CoreStrike"
+                Width="200"
+                Visibility="Collapsed"
+                Click="LaunchButton_Click"/>
+
+        </StackPanel>
+    </Grid>
+</Window>
