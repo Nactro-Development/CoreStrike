@@ -1,5 +1,5 @@
 {
   "version": "1.2.0.5",
   "downloadUrl": "https://github.com/Nactro-Development/CoreStrikeSetup/releases/download/CoreStrikeSetup_1.2.0.5_x64/CoreStrikeSetup_1.2.0.5_x64.exe",
-  "releaseNotes": "Added GPU monitoring and bug fixes"
+  "releaseNotes": "🚀 What's New in v1.2.0.5\n\n• Added real-time GPU monitoring.\n• Improved CPU and memory monitoring accuracy.\n• Optimized dashboard performance for smoother updates.\n• Reduced resource usage during background monitoring.\n• Fixed several UI rendering issues.\n• Improved application startup speed.\n• Fixed stability issues that could cause unexpected crashes.\n• Enhanced hardware detection and compatibility.\n• Improved update system reliability.\n• General bug fixes and performance improvements."
 }
