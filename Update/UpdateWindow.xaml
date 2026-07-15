@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="CoreStrike.Update.UpdateWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CoreStrike.Update"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="UpdateWindow">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+
+
+    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="7.5"  BorderThickness="2" BorderBrush="#57FAAB" >
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" >
+
+                <Grid.ColumnDefinitions>
+
+                    <ColumnDefinition Width="700" />
+                    <ColumnDefinition Width="auto" />
+
+                </Grid.ColumnDefinitions>
+
+
+                <StackPanel Margin="50" Orientation="Vertical" Spacing="10" >
+
+                    <StackPanel Orientation="Horizontal" >
+
+                        <Image VerticalAlignment="Center" Source="/Assets/logo2.png" Width="110" />
+
+                        <StackPanel VerticalAlignment="Center" Margin="10,0" >
+                            <TextBlock Text="NEW UPDATE" FontSize="15" FontWeight="SemiBold" />
+                            <TextBlock
+    x:Name="VersionText"
+    Text="v2.1.0"
+    FontSize="50"
+    FontWeight="Bold"/>
+                            <TextBlock TextWrapping="Wrap" Width="300" Text="We'v added powerfull new features and improvements to enhance your enperience."/>
+                        </StackPanel>
+
+
+
+
+                    </StackPanel>
+
+
+                    <Border Padding="30" CornerRadius="10" Height="400" Background="{ThemeResource LayerFillColorDefaultBrush}" >
+
+                        <StackPanel>
+
+                            <TextBlock Text="What's New" FontSize="15" FontWeight="SemiBold" />
+
+                            <TextBlock x:Name="updatetext" Text="" />
+
+                        </StackPanel>
+
+
+                    </Border>
+
+                </StackPanel>
+
+
+
+
+                <StackPanel Margin="50" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20" Grid.Column="1" >
+
+
+
+                    <Border BorderBrush="#57FAAB" BorderThickness="3" CornerRadius="10" Padding="25" >
+                        <FontIcon Glyph="&#xE896;" FontSize="150" Foreground="#57FAAB" />
+                    </Border>
+
+                <ProgressBar
+    x:Name="DownloadProgress"
+    Minimum="0"
+    Maximum="100"/>
+
+                <TextBlock
+    x:Name="PercentageText"
+    Text="0%"
+    FontSize="24"
+    FontWeight="Bold"/>
+
+                <TextBlock
+    x:Name="ProgressText"
+    Text="0 MB / 0 MB"/>
+
+                <TextBlock
+    x:Name="SpeedText"
+    Text="0 MB/s"/>
+
+                <TextBlock
+    x:Name="RemainingText"
+    Text="Remaining: --:--"/>
+                    
+                    
+
+                <Button x:Name="DownloadButton"
+        Click="Download_Click"
+        Content="Download"/>
+
+                <Button x:Name="InstallButton"
+        Click="Install_Click"
+        Content="Install"/>
+
+
+                <Button  HorizontalAlignment="Center"  Click="DownloadLater_Click" Content="Download Letter" />
+
+
+
+                </StackPanel>
+
+
+
+            </Grid>
+        </Border>
+
+</Window>

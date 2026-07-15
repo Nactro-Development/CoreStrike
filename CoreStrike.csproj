@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="About\About.xaml" />
+    <None Remove="Assets\Dbox.svg" />
     <None Remove="Assets\fan.svg" />
     <None Remove="Assets\LargeTile.scale-100.png" />
     <None Remove="Assets\LargeTile.scale-125.png" />
@@ -347,6 +348,9 @@
     <None Remove="Assets\flags\1x1\zm.svg" />
     <None Remove="Assets\flags\1x1\zw.svg" />
     <None Remove="Resources\PawnIO_setup.exe" />
+    <None Remove="Services\CrashWindow.xaml" />
+    <None Remove="Settings\SettingsPage.xaml" />
+    <None Remove="Update\UpdateWindow.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -396,6 +400,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Content Update="Assets\174861.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Dbox.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\fan.svg">
@@ -1388,5 +1395,14 @@
     <None Update="Resources\pawanio.exe">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Update\UpdateWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Settings\SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Services\CrashWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>

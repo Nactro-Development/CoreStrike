@@ -271,11 +271,16 @@ namespace CoreStrike.DashBord
             StartFan();
             StartFanGPU();
 
-            Loaded += DashBord_Loaded;
+            DashBord_Loaded();
         }
 
 
-        private void DashBord_Loaded(object sender, RoutedEventArgs e)
+
+
+
+
+
+        private void DashBord_Loaded()
         {
             DashboardReady?.Invoke();
         }

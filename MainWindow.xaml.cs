@@ -22,6 +22,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using WinRT.Interop;
 using Microsoft.UI.Xaml.Media.Imaging;
+using CoreStrike.Update;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -33,12 +34,21 @@ namespace CoreStrike
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+
+
+        private const string CurrentVersion = "1.2.0.5";
+
+        private const string UpdateUrl =
+        "https://raw.githubusercontent.com/Nactro-Development/CoreStrike/refs/heads/Update/Update/update.json";
+
+
+
         private bool _initialized = false;
         public MainWindow()
         {
             
             InitializeComponent();
-
+          
 
             var profile = UserProfile.Load();
 
@@ -88,45 +98,35 @@ namespace CoreStrike
                 {
                     LoadingGrid.Visibility = Visibility.Collapsed;
                     MainContentGrid.Visibility = Visibility.Visible;
+                    ProfilePanel.Visibility = Visibility.Visible;
                 });
             };
-
-
-
-
-
-
-
         }
-
-
-
-
 
         private async void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
 
-
+          
 
             if (_initialized) return;
             _initialized = true;
+
             LoadingGrid.Visibility = Visibility.Visible;
             MainContentGrid.Visibility = Visibility.Collapsed;
+            ProfilePanel.Visibility = Visibility.Collapsed;
 
-            await Task.Delay(500);
+
+            await Task.Delay(3000); // Simulate a delay
 
             contentFrame.Navigate(typeof(DashBord.DashBord));
 
-            await Task.Delay(1000);
-
-            LoadingGrid.Visibility = Visibility.Collapsed;
-            MainContentGrid.Visibility = Visibility.Visible;
 
             if (!IsPawnIOInstalled())
             {
                 await CheckAndInstallPawnIO();
             }
         }
+
 
 
 
@@ -253,6 +253,15 @@ namespace CoreStrike
 
         private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+
+            // Built-in Settings item
+            if (args.IsSettingsSelected)
+            {
+                contentFrame.Navigate(typeof(Settings.SettingsPage));
+                return;
+            }
+
+
             if (args.SelectedItem is NavigationViewItem item)
             {
                 string tag = item.Tag.ToString();
@@ -283,5 +292,14 @@ namespace CoreStrike
         }
 
 
+       
+
+
+
+
     }
+
+  
+
+
 }
